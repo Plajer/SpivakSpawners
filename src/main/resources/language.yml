@@ -1,0 +1,11 @@
+Messages:
+  Added-Head: "&a&l+ 1 %mob% Head added to storage!"
+
+Menus:
+  Shop-Menu:
+    Item-Format:
+      Name: "&e%mob% &fSpawner"
+      Lore: "&7Price: &e%money%$/each"
+      Bonus-Lore:
+        Locked: ";&c&lLOCKED;;&eTo unlock the spawner:;&7Heads needed: &e%heads_amount% %mob% Heads;&7Money needed: &e%money%$"
+        Unlocked: "&a&lUNLOCKED"

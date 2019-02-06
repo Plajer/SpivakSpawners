@@ -1,0 +1,85 @@
+Spawners:
+  Pig:
+    # Price of spawner
+    Price: 2500
+    # This is default spawner because level 1 is default
+    Level: 1
+  Wolf:
+    Price: 3000
+    # Level needed to unlock this spawner
+    Level: 2
+  Ocelot:
+    Price: 3500
+    Level: 3
+  Rabbit:
+    Price: 4000
+    Level: 4
+  Sheep:
+    Price: 4500
+    Level: 5
+  Chicken:
+    Price: 5000
+    Level: 6
+  Cow:
+    Price: 5500
+    Level: 7
+  Mushroom-Cow:
+    Price: 6000
+    Level: 8
+  Horse:
+    Price: 6500
+    Level: 9
+  Endermite:
+    Price: 7000
+    Level: 10
+  Cave-Spider:
+    Price: 7500
+    Level: 11
+  Spider:
+    Price: 8000
+    Level: 12
+  Squid:
+    Price: 8500
+    Level: 13
+  Zombie:
+    Price: 9000
+    Level: 14
+  Skeleton:
+    Price: 9500
+    Level: 15
+  Guardian:
+    Price: 10000
+    Level: 16
+  Creeper:
+    Price: 10500
+    Level: 17
+  Magma-Cube:
+    Price: 11000
+    Level: 18
+  Slime:
+    Price: 11500
+    Level: 19
+  Enderman:
+    Price: 12000
+    Level: 20
+  Blaze:
+    Price: 12500
+    Level: 21
+  Witch:
+    Price: 13000
+    Level: 22
+  Iron-Golem:
+    Price: 13500
+    Level: 23
+  Pigman:
+    Price: 14000
+    Level: 24
+  Silver-Fish:
+    Price: 14500
+    Level: 25
+  Villager:
+    Price: 15000
+    Level: 26
+  Ghast:
+    Price: 15500
+    Level: 27

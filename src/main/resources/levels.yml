@@ -1,0 +1,109 @@
+Levels:
+  # Level number, level 1 unlocks wolf spawner, can be configured in spawners.yml
+  2:
+    # Heads needed to unlock 1st level
+    Heads-Needed: 1000
+    # Mob head type needed to unlock 1st level
+    Head-Type: PIG
+    # Money amount needed to unlock 1st level
+    Money-Needed: 1500
+  3:
+    Heads-Needed: 1500
+    Head-Type: WOLF
+    Money-Needed: 2500
+  4:
+    Heads-Needed: 2000
+    Head-Type: OCELOT
+    Money-Needed: 3500
+  5:
+    Heads-Needed: 2500
+    Head-Type: RABBIT
+    Money-Needed: 4500
+  6:
+    Heads-Needed: 3000
+    Head-Type: SHEEP
+    Money-Needed: 5500
+  7:
+    Heads-Needed: 3500
+    Head-Type: CHICKEN
+    Money-Needed: 6500
+  8:
+    Heads-Needed: 4000
+    Head-Type: COW
+    Money-Needed: 7500
+  9:
+    Heads-Needed: 4500
+    Head-Type: MUSHROOM_COW
+    Money-Needed: 8500
+  10:
+    Heads-Needed: 5000
+    Head-Type: HORSE
+    Money-Needed: 9500
+  11:
+    Heads-Needed: 5500
+    Head-Type: ENDERMITE
+    Money-Needed: 10500
+  12:
+    Heads-Needed: 6000
+    Head-Type: CAVE_SPIDER
+    Money-Needed: 11500
+  13:
+    Heads-Needed: 6500
+    Head-Type: SPIDER
+    Money-Needed: 12500
+  14:
+    Heads-Needed: 7000
+    Head-Type: SQUID
+    Money-Needed: 13500
+  15:
+    Heads-Needed: 7500
+    Head-Type: ZOMBIE
+    Money-Needed: 14500
+  16:
+    Heads-Needed: 8500
+    Head-Type: SKELETON
+    Money-Needed: 15500
+  17:
+    Heads-Needed: 9000
+    Head-Type: GUARDIAN
+    Money-Needed: 16500
+  18:
+    Heads-Needed: 9500
+    Head-Type: CREEPER
+    Money-Needed: 17500
+  19:
+    Heads-Needed: 10000
+    Head-Type: MAGMA_CUBE
+    Money-Needed: 18500
+  20:
+    Heads-Needed: 10500
+    Head-Type: SLIME
+    Money-Needed: 19500
+  21:
+    Heads-Needed: 11000
+    Head-Type: ENDERMAN
+    Money-Needed: 20500
+  22:
+    Heads-Needed: 11500
+    Head-Type: BLAZE
+    Money-Needed: 21500
+  23:
+    Heads-Needed: 12000
+    Head-Type: WITCH
+    Money-Needed: 22500
+  24:
+    Heads-Needed: 12500
+    Head-Type: IRON_GOLEM
+    Money-Needed: 23500
+  25:
+    Heads-Needed: 13000
+    Head-Type: PIGMAN
+    Money-Needed: 24500
+  26:
+    Heads-Needed: 13500
+    Head-Type: SILVERFISH
+    Money-Needed: 25500
+  27:
+    Heads-Needed: 14000
+    Head-Type: VILLAGER
+    Money-Needed: 26500
