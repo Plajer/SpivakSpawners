@@ -2,55 +2,34 @@ package pl.plajer.spivakspawners.user;
 
 import org.bukkit.entity.Player;
 
-import java.util.List;
-
 /**
  * @author Plajer
  * <p>
- * Created at 06.02.2019
+ * Created at 12.02.2019
  */
 public class User {
 
     private Player player;
-    private int tokens = 0;
+    private int level;
 
     public User(Player player) {
         this.player = player;
     }
 
-    public void setCurrentPrefix(String currentPrefix) {
-        this.currentPrefix = currentPrefix;
+    public int getLevel() {
+        return level;
     }
 
-    public String getCurrentPrefix() {
-        return currentPrefix;
+    public void setLevel(int level) {
+        this.level = level;
     }
 
-    public boolean hasPrefix() {
-        return currentPrefix != null && !currentPrefix.equals("");
-    }
-
-    public void addCustomTag(String tag) {
-        customTags.add(tag);
-    }
-
-    public List<String> getCustomTags() {
-        return customTags;
-    }
-
-    public int getTokens() {
-        return tokens;
-    }
-
-    public void setTokens(int tokens) {
-        this.tokens = tokens;
-    }
-
-    public void addTokens(int tokens) {
-        this.tokens += tokens;
+    public void addLevel(int level) {
+        this.level += level;
     }
 
     public Player getPlayer() {
         return player;
     }
+
 }

@@ -1,5 +1,6 @@
 Levels:
-  # Level number, level 1 unlocks wolf spawner, can be configured in spawners.yml
+  # Level number, level 1 is default and has pig spawner, cannot be changed
+  # To get level 2 (wolf spawner) you need to have pig heads
   2:
     # Heads needed to unlock 1st level
     Heads-Needed: 1000
@@ -97,7 +98,7 @@ Levels:
     Money-Needed: 23500
   25:
     Heads-Needed: 13000
-    Head-Type: PIGMAN
+    Head-Type: PIG_ZOMBIE
     Money-Needed: 24500
   26:
     Heads-Needed: 13500
