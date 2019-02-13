@@ -1,8 +1,9 @@
 package pl.plajer.spivakspawners.registry.spawner.living;
 
-import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.jetbrains.annotations.Nullable;
 import pl.plajer.spivakspawners.Main;
 import pl.plajerlair.core.utils.ConfigUtils;
 
@@ -53,6 +54,22 @@ public class SpawnersStorage {
         datum.add(spawner.serialize());
         config.set("Data", datum);
         ConfigUtils.saveConfig(plugin, config, "spawners_data");
+    }
+
+    /**
+     * Get spawner by location
+     *
+     * @param loc location
+     * @return Spawner or null if no spawner in location
+     */
+    @Nullable
+    public Spawner getByLocation(Location loc) {
+        for(Spawner spawner : spawnedSpawners) {
+            if(spawner.getLocation().equals(loc)) {
+                return spawner;
+            }
+        }
+        return null;
     }
 
     private boolean validate(Spawner spawner) {

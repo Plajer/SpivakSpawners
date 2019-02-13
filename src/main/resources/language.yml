@@ -1,6 +1,7 @@
 Messages:
   Added-Head: "&a&l+ 1 %mob% Head added to storage!"
   Spawner-Placed: "&e&lPlaced %mob% Spawner!"
+  Spawner-Merged: "&e&lMerged %mob% Spawner!"
   Not-Your-Spawner: "&c&l(✘) &cYou cannot break spawner you don't own!"
   Only-Silk-Touch: "&c&l(✘) &cYou can drop spawners only with silk touch enchantment!"
 
@@ -31,3 +32,6 @@ Drop-Item:
   # Please edit only colors, otherwise it won't work properly :(
   Name: "&e&l%mob% Spawner"
   Lore: "&7Place to combine with other spawners;&7or to spawn entities!"
+
+Merged:
+  Entity-Name: "&e&l%number%x %mob%"

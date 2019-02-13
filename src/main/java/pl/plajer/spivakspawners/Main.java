@@ -1,7 +1,11 @@
 package pl.plajer.spivakspawners;
 
+import org.bukkit.Bukkit;
+import org.bukkit.World;
+import org.bukkit.entity.Entity;
 import org.bukkit.plugin.java.JavaPlugin;
 import pl.plajer.spivakspawners.handlers.LanguageManager;
+import pl.plajer.spivakspawners.handlers.MergeHandler;
 import pl.plajer.spivakspawners.listeners.JoinQuitListener;
 import pl.plajer.spivakspawners.listeners.SpawnerListeners;
 import pl.plajer.spivakspawners.registry.heads.HeadsRegistry;
@@ -26,6 +30,7 @@ public class Main extends JavaPlugin {
     private BuyableSpawnersRegistry buyableSpawnersRegistry;
     private SpawnersStorage spawnersStorage;
     private UserManager userManager;
+    private MergeHandler mergeHandler;
 
     @Override
     public void onEnable() {
@@ -36,6 +41,7 @@ public class Main extends JavaPlugin {
         buyableSpawnersRegistry = new BuyableSpawnersRegistry(this);
         spawnersStorage = new SpawnersStorage(this);
         userManager = new UserManager(this);
+        mergeHandler = new MergeHandler();
         new JoinQuitListener(this);
         new SpawnerListeners(this);
     }
@@ -47,6 +53,13 @@ public class Main extends JavaPlugin {
         }
         for(Spawner spawner : spawnersStorage.getSpawnedSpawners()) {
             spawnersStorage.saveSpawnerData(spawner);
+        }
+        for(World world : Bukkit.getWorlds()) {
+            for(Entity en : world.getEntities()) {
+                if(en.hasMetadata("SpivakSpawnersEntity")) {
+                    en.remove();
+                }
+            }
         }
     }
 
@@ -63,6 +76,10 @@ public class Main extends JavaPlugin {
 
     public LevelsRegistry getLevelsRegistry() {
         return levelsRegistry;
+    }
+
+    public MergeHandler getMergeHandler() {
+        return mergeHandler;
     }
 
     public HeadsRegistry getHeadsRegistry() {

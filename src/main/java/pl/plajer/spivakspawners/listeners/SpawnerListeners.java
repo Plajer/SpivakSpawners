@@ -2,19 +2,28 @@ package pl.plajer.spivakspawners.listeners;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.block.Block;
 import org.bukkit.block.CreatureSpawner;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.Entity;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.entity.SpawnerSpawnEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.metadata.FixedMetadataValue;
 import pl.plajer.spivakspawners.Main;
 import pl.plajer.spivakspawners.menus.SpawnerUpgradeMenu;
+import pl.plajer.spivakspawners.registry.spawner.data.SpawnerData;
+import pl.plajer.spivakspawners.registry.spawner.data.SpawnerPerk;
 import pl.plajer.spivakspawners.registry.spawner.living.Spawner;
+import pl.plajer.spivakspawners.utils.Utils;
 import pl.plajerlair.core.utils.ItemBuilder;
+
+import java.util.Arrays;
 
 /**
  * @author Plajer
@@ -63,9 +72,9 @@ public class SpawnerListeners implements Listener {
             }
             e.setExpToDrop(0);
             if(e.getPlayer().getItemInHand().getEnchantments().containsKey(Enchantment.SILK_TOUCH)) {
-                //todo support more than one amount if merged spawner
                 CreatureSpawner creatureSpawner = (CreatureSpawner) e.getBlock().getState();
-                e.getBlock().getWorld().dropItemNaturally(e.getBlock().getLocation(), new ItemBuilder(new ItemStack(e.getBlock().getType()))
+                e.getBlock().getWorld().dropItemNaturally(e.getBlock().getLocation(), new ItemBuilder(new ItemStack(e.getBlock().getType(),
+                        spawner.getSpawnerData().getSpawnerLevel()))
                         .name(plugin.getLanguageManager().color("Drop-Item.Name").replace("%mob%", creatureSpawner.getCreatureTypeName()))
                         .lore(plugin.getLanguageManager().color("Drop-Item.Lore").split(";"))
                         .build());
@@ -81,13 +90,32 @@ public class SpawnerListeners implements Listener {
         if(e.getBlockPlaced() == null || e.getBlockPlaced().getType() != Material.MOB_SPAWNER) {
             return;
         }
-        if(!e.getItemInHand().hasItemMeta() || !e.getItemInHand().getItemMeta().hasDisplayName()) {
+        if(!e.getItemInHand().hasItemMeta() || !e.getItemInHand().getItemMeta().hasDisplayName() || !e.getItemInHand().getItemMeta().hasLore()) {
             return;
         }
-        //todo lore check for valid and real spawner!
+        if(!e.getItemInHand().getItemMeta().getLore().equals(Arrays.asList(plugin.getLanguageManager().color("Drop-Item.Lore").split(";")))) {
+            return;
+        }
         String mob = ChatColor.stripColor(e.getPlayer().getItemInHand().getItemMeta().getDisplayName());
         mob = mob.replace(" Spawner", "");
-        //todo not all spawners are plugin spawners!
+        for(Block block : Utils.getNearbyBlocks(e.getBlockPlaced().getLocation(), 3)) {
+            if(block.getType() != Material.MOB_SPAWNER) {
+                continue;
+            }
+            CreatureSpawner creatureSpawner = (CreatureSpawner) block.getState();
+            if(!creatureSpawner.getCreatureTypeName().equals(mob)) {
+                continue;
+            }
+            Spawner spawner = plugin.getSpawnersStorage().getByLocation(block.getLocation());
+            if(spawner.getSpawnerData().getSpawnerLevel() == SpawnerData.MAX_UPGRADE_LEVEL) {
+                continue;
+            }
+            e.setCancelled(true);
+            spawner.getSpawnerData().setSpawnerLevel(spawner.getSpawnerData().getSpawnerLevel() + 1);
+            e.getPlayer().sendMessage(plugin.getLanguageManager().color("Messages.Spawner-Merged")
+                    .replace("%mob%", spawner.getSpawnerData().getEntityType().getName()));
+            return;
+        }
         CreatureSpawner creatureSpawner = (CreatureSpawner) e.getBlockPlaced().getState();
         creatureSpawner.setCreatureTypeByName(mob);
         Spawner spawner = new Spawner(e.getPlayer().getUniqueId(), e.getBlockPlaced().getLocation(), creatureSpawner.getSpawnedType());
@@ -95,6 +123,30 @@ public class SpawnerListeners implements Listener {
         plugin.getSpawnersStorage().getSpawnedSpawners().add(spawner);
         e.getPlayer().sendMessage(plugin.getLanguageManager().color("Messages.Spawner-Placed")
                 .replace("%mob%", spawner.getSpawnerData().getEntityType().getName()));
+    }
+
+    @EventHandler
+    public void onSpawnerSpawn(SpawnerSpawnEvent e) {
+        Spawner spawner = plugin.getSpawnersStorage().getByLocation(e.getSpawner().getLocation());
+        if(spawner == null) {
+            return;
+        }
+        Entity mergeableWith = plugin.getMergeHandler().getNearbyMergeable(e.getEntity());
+        if(mergeableWith != null) {
+            int mergedEntities = mergeableWith.getMetadata("SpivakSpawnersEntitiesMerged").get(0).asInt();
+            mergeableWith.setMetadata("SpivakSpawnersEntitiesMerged", new FixedMetadataValue(plugin, mergedEntities + 1));
+            mergeableWith.setCustomName(plugin.getLanguageManager().color("Merged.Entity-Name")
+                    .replace("%mob%", mergeableWith.getType().getName())
+                    .replace("%amount%", String.valueOf(mergedEntities + 1)));
+            e.setCancelled(true);
+            return;
+        }
+        e.getEntity().setMetadata("SpivakSpawnersEntity", new FixedMetadataValue(plugin, true));
+        e.getEntity().setMetadata("SpivakSpawnersEntitiesMerged", new FixedMetadataValue(plugin, 1));
+        for(SpawnerPerk perk : spawner.getPerks()) {
+            e.getEntity().setMetadata(perk.getMetadataAccessor(), new FixedMetadataValue(plugin, true));
+        }
+        e.getEntity().setCustomNameVisible(true);
     }
 
 }

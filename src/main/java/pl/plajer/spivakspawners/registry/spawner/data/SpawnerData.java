@@ -24,6 +24,10 @@ public class SpawnerData implements Serializable {
         return spawnerLevel;
     }
 
+    public void setSpawnerLevel(int spawnerLevel) {
+        this.spawnerLevel = spawnerLevel;
+    }
+
     public EntityType getEntityType() {
         return entityType;
     }
