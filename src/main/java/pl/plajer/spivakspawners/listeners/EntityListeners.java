@@ -7,6 +7,7 @@ import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.metadata.FixedMetadataValue;
 import pl.plajer.spivakspawners.Main;
 import pl.plajer.spivakspawners.registry.spawner.data.SpawnerPerk;
+import pl.plajer.spivakspawners.utils.Utils;
 
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -30,8 +31,18 @@ public class EntityListeners implements Listener {
             return;
         }
         int merged = e.getEntity().getMetadata("SpivakSpawnersEntitiesMerged").get(0).asInt();
+        String displayName = plugin.getLanguageManager().color("Merged.Entity-Name")
+                .replace("%mob%", e.getEntity().getType().getName())
+                .replace("%number%", String.valueOf(merged - 1));
         if(merged - 1 > 0) {
+            //update died entity display name cause it's visible for few seconds after death
+            //and we want to display user real amount, visibility disable doesn't work
+            e.getEntity().setCustomName(displayName);
+
             Entity en = e.getEntity().getWorld().spawnEntity(e.getEntity().getLocation(), e.getEntityType());
+            Utils.noAI(en);
+            en.setCustomName(displayName);
+            en.setCustomNameVisible(true);
             //pass all metadata values to the new entity
             en.setMetadata("SpivakSpawnersEntity", new FixedMetadataValue(plugin, true));
             en.setMetadata("SpivakSpawnersEntitiesMerged", new FixedMetadataValue(plugin, merged - 1));

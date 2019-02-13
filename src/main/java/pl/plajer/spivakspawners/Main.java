@@ -6,6 +6,7 @@ import org.bukkit.entity.Entity;
 import org.bukkit.plugin.java.JavaPlugin;
 import pl.plajer.spivakspawners.handlers.LanguageManager;
 import pl.plajer.spivakspawners.handlers.MergeHandler;
+import pl.plajer.spivakspawners.listeners.EntityListeners;
 import pl.plajer.spivakspawners.listeners.JoinQuitListener;
 import pl.plajer.spivakspawners.listeners.SpawnerListeners;
 import pl.plajer.spivakspawners.registry.heads.HeadsRegistry;
@@ -44,6 +45,7 @@ public class Main extends JavaPlugin {
         mergeHandler = new MergeHandler();
         new JoinQuitListener(this);
         new SpawnerListeners(this);
+        new EntityListeners(this);
     }
 
     @Override

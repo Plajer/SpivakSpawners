@@ -107,10 +107,11 @@ public class SpawnerListeners implements Listener {
                 continue;
             }
             Spawner spawner = plugin.getSpawnersStorage().getByLocation(block.getLocation());
-            if(spawner.getSpawnerData().getSpawnerLevel() == SpawnerData.MAX_UPGRADE_LEVEL) {
+            if(spawner == null || spawner.getSpawnerData().getSpawnerLevel() == SpawnerData.MAX_UPGRADE_LEVEL) {
                 continue;
             }
             e.setCancelled(true);
+            e.getItemInHand().setAmount(e.getItemInHand().getAmount() - 1);
             spawner.getSpawnerData().setSpawnerLevel(spawner.getSpawnerData().getSpawnerLevel() + 1);
             e.getPlayer().sendMessage(plugin.getLanguageManager().color("Messages.Spawner-Merged")
                     .replace("%mob%", spawner.getSpawnerData().getEntityType().getName()));
@@ -118,6 +119,7 @@ public class SpawnerListeners implements Listener {
         }
         CreatureSpawner creatureSpawner = (CreatureSpawner) e.getBlockPlaced().getState();
         creatureSpawner.setCreatureTypeByName(mob);
+        creatureSpawner.setDelay(50);
         Spawner spawner = new Spawner(e.getPlayer().getUniqueId(), e.getBlockPlaced().getLocation(), creatureSpawner.getSpawnedType());
         e.getBlockPlaced().getWorld().strikeLightningEffect(e.getBlockPlaced().getLocation());
         plugin.getSpawnersStorage().getSpawnedSpawners().add(spawner);
@@ -127,17 +129,26 @@ public class SpawnerListeners implements Listener {
 
     @EventHandler
     public void onSpawnerSpawn(SpawnerSpawnEvent e) {
+        if(e.getSpawner() == null) {
+            //still spawned via spawner but 1.8 is buggy so it's not in the event...
+            //just recompensate this with higher spawn delay
+            e.setCancelled(true);
+            return;
+        }
         Spawner spawner = plugin.getSpawnersStorage().getByLocation(e.getSpawner().getLocation());
         if(spawner == null) {
             return;
         }
+        e.getSpawner().setDelay(100);
+        Utils.noAI(e.getEntity());
         Entity mergeableWith = plugin.getMergeHandler().getNearbyMergeable(e.getEntity());
         if(mergeableWith != null) {
             int mergedEntities = mergeableWith.getMetadata("SpivakSpawnersEntitiesMerged").get(0).asInt();
             mergeableWith.setMetadata("SpivakSpawnersEntitiesMerged", new FixedMetadataValue(plugin, mergedEntities + 1));
             mergeableWith.setCustomName(plugin.getLanguageManager().color("Merged.Entity-Name")
                     .replace("%mob%", mergeableWith.getType().getName())
-                    .replace("%amount%", String.valueOf(mergedEntities + 1)));
+                    .replace("%number%", String.valueOf(mergedEntities + 1)));
+            mergeableWith.setCustomNameVisible(true);
             e.setCancelled(true);
             return;
         }

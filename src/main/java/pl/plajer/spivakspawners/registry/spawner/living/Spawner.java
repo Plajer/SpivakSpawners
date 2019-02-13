@@ -1,6 +1,8 @@
 package pl.plajer.spivakspawners.registry.spawner.living;
 
 import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.block.CreatureSpawner;
 import org.bukkit.entity.EntityType;
 import pl.plajer.spivakspawners.registry.spawner.data.SpawnerData;
 import pl.plajer.spivakspawners.registry.spawner.data.SpawnerPerk;
@@ -25,6 +27,7 @@ import java.util.UUID;
  */
 public class Spawner implements Serializable {
 
+    private static final long serialVersionUID = 123456789;
     private transient Location location;
     //serializable object that can replace non serializable location object
     private SpawnerLocation spawnerLocation;
@@ -52,6 +55,9 @@ public class Spawner implements Serializable {
             Spawner spawner = (Spawner) objectInputStream.readObject();
             objectInputStream.close();
             spawner.location = spawner.spawnerLocation.asLocation();
+            if(spawner.location.getBlock().getType() == Material.MOB_SPAWNER) {
+                ((CreatureSpawner) spawner.location.getBlock().getState()).setDelay(100);
+            }
             return spawner;
         } catch(IOException | ClassNotFoundException e) {
             e.printStackTrace();
@@ -95,6 +101,16 @@ public class Spawner implements Serializable {
             e.printStackTrace();
             return null;
         }
+    }
+
+    private void writeObject(ObjectOutputStream stream)
+            throws IOException {
+        stream.defaultWriteObject();
+    }
+
+    private void readObject(ObjectInputStream stream)
+            throws IOException, ClassNotFoundException {
+        stream.defaultReadObject();
     }
 
 }
