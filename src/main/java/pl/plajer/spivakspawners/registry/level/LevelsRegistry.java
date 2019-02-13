@@ -39,7 +39,7 @@ public class LevelsRegistry {
     levels.add(new Level(1, baseHead, 0, 0));
     for (String key : config.getConfigurationSection("Levels").getKeys(false)) {
       String access = "Levels." + key + ".";
-      levels.add(new Level(Integer.valueOf(key), plugin.getHeadsRegistry().getByEntityType(EntityType.valueOf(config.getString(access + "Head-Type").toUpperCase())),
+      levels.add(new Level(Integer.parseInt(key), plugin.getHeadsRegistry().getByEntityType(EntityType.valueOf(config.getString(access + "Head-Type").toUpperCase())),
           config.getInt(access + "Heads-Needed"), config.getInt(access + "Money-Needed")));
     }
   }
