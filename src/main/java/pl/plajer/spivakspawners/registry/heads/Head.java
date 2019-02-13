@@ -11,14 +11,14 @@ import org.bukkit.entity.EntityType;
  */
 public class Head {
 
-    private EntityType entityType;
+  private EntityType entityType;
 
-    public Head(EntityType entityType) {
-        this.entityType = entityType;
-    }
+  public Head(EntityType entityType) {
+    this.entityType = entityType;
+  }
 
-    public EntityType getEntityType() {
-        return entityType;
-    }
+  public EntityType getEntityType() {
+    return entityType;
+  }
 
 }

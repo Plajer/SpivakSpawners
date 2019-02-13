@@ -1,6 +1,7 @@
 package pl.plajer.spivakspawners.registry.spawner.living;
 
 import com.gmail.filoghost.holographicdisplays.api.Hologram;
+
 import org.bukkit.entity.Entity;
 
 /**
@@ -10,20 +11,20 @@ import org.bukkit.entity.Entity;
  */
 public class SpawnerEntity {
 
-    private Hologram hologram;
-    private Entity entity;
+  private Hologram hologram;
+  private Entity entity;
 
-    public SpawnerEntity(Hologram hologram, Entity entity) {
-        this.hologram = hologram;
-        this.entity = entity;
-    }
+  public SpawnerEntity(Hologram hologram, Entity entity) {
+    this.hologram = hologram;
+    this.entity = entity;
+  }
 
-    public Hologram getHologram() {
-        return hologram;
-    }
+  public Hologram getHologram() {
+    return hologram;
+  }
 
-    public Entity getEntity() {
-        return entity;
-    }
+  public Entity getEntity() {
+    return entity;
+  }
 
 }

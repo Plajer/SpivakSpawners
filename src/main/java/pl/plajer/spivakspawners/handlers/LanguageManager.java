@@ -2,6 +2,7 @@ package pl.plajer.spivakspawners.handlers;
 
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
+
 import pl.plajer.spivakspawners.Main;
 import pl.plajerlair.core.utils.ConfigUtils;
 
@@ -12,22 +13,22 @@ import pl.plajerlair.core.utils.ConfigUtils;
  */
 public class LanguageManager {
 
-    private FileConfiguration config;
+  private FileConfiguration config;
 
-    public LanguageManager(Main plugin) {
-        this.config = ConfigUtils.getConfig(plugin, "language");
-    }
+  public LanguageManager(Main plugin) {
+    this.config = ConfigUtils.getConfig(plugin, "language");
+  }
 
-    public FileConfiguration getConfig() {
-        return config;
-    }
+  public FileConfiguration getConfig() {
+    return config;
+  }
 
-    public String color(String accessor) {
-        return ChatColor.translateAlternateColorCodes('&', config.getString(accessor));
-    }
+  public String color(String accessor) {
+    return ChatColor.translateAlternateColorCodes('&', config.getString(accessor));
+  }
 
-    public String colorRaw(String message) {
-        return ChatColor.translateAlternateColorCodes('&', message);
-    }
+  public String colorRaw(String message) {
+    return ChatColor.translateAlternateColorCodes('&', message);
+  }
 
 }

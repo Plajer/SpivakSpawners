@@ -9,31 +9,31 @@ import pl.plajer.spivakspawners.registry.heads.Head;
  */
 public class Level {
 
-    private int level;
-    private Head head;
-    private int headsNeeded;
-    private int moneyNeeded;
+  private int level;
+  private Head head;
+  private int headsNeeded;
+  private int moneyNeeded;
 
-    public Level(int level, Head head, int headsNeeded, int moneyNeeded) {
-        this.level = level;
-        this.head = head;
-        this.headsNeeded = headsNeeded;
-        this.moneyNeeded = moneyNeeded;
-    }
+  public Level(int level, Head head, int headsNeeded, int moneyNeeded) {
+    this.level = level;
+    this.head = head;
+    this.headsNeeded = headsNeeded;
+    this.moneyNeeded = moneyNeeded;
+  }
 
-    public int getLevel() {
-        return level;
-    }
+  public int getLevel() {
+    return level;
+  }
 
-    public Head getHead() {
-        return head;
-    }
+  public Head getHead() {
+    return head;
+  }
 
-    public int getHeadsNeeded() {
-        return headsNeeded;
-    }
+  public int getHeadsNeeded() {
+    return headsNeeded;
+  }
 
-    public int getMoneyNeeded() {
-        return moneyNeeded;
-    }
+  public int getMoneyNeeded() {
+    return moneyNeeded;
+  }
 }

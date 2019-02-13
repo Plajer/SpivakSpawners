@@ -1,8 +1,8 @@
 package pl.plajer.spivakspawners.registry.spawner.data;
 
-import org.bukkit.entity.EntityType;
-
 import java.io.Serializable;
+
+import org.bukkit.entity.EntityType;
 
 /**
  * @author Plajer
@@ -11,24 +11,24 @@ import java.io.Serializable;
  */
 public class SpawnerData implements Serializable {
 
-    public static final int MAX_UPGRADE_LEVEL = 28;
-    private int spawnerLevel;
-    private EntityType entityType;
+  public static final int MAX_UPGRADE_LEVEL = 28;
+  private int spawnerLevel;
+  private EntityType entityType;
 
-    public SpawnerData(int spawnerLevel, EntityType entityType) {
-        this.spawnerLevel = spawnerLevel;
-        this.entityType = entityType;
-    }
+  public SpawnerData(int spawnerLevel, EntityType entityType) {
+    this.spawnerLevel = spawnerLevel;
+    this.entityType = entityType;
+  }
 
-    public int getSpawnerLevel() {
-        return spawnerLevel;
-    }
+  public int getSpawnerLevel() {
+    return spawnerLevel;
+  }
 
-    public void setSpawnerLevel(int spawnerLevel) {
-        this.spawnerLevel = spawnerLevel;
-    }
+  public void setSpawnerLevel(int spawnerLevel) {
+    this.spawnerLevel = spawnerLevel;
+  }
 
-    public EntityType getEntityType() {
-        return entityType;
-    }
+  public EntityType getEntityType() {
+    return entityType;
+  }
 }
