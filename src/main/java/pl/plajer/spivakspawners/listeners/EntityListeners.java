@@ -1,14 +1,19 @@
 package pl.plajer.spivakspawners.listeners;
 
+import com.gmail.filoghost.holographicdisplays.api.Hologram;
+import com.gmail.filoghost.holographicdisplays.api.HologramsAPI;
 import org.bukkit.entity.Entity;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDeathEvent;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.FixedMetadataValue;
 import pl.plajer.spivakspawners.Main;
 import pl.plajer.spivakspawners.registry.spawner.data.SpawnerPerk;
+import pl.plajer.spivakspawners.registry.spawner.living.SpawnerEntity;
 import pl.plajer.spivakspawners.utils.Utils;
 
+import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
 /**
@@ -31,18 +36,17 @@ public class EntityListeners implements Listener {
             return;
         }
         int merged = e.getEntity().getMetadata("SpivakSpawnersEntitiesMerged").get(0).asInt();
-        String displayName = plugin.getLanguageManager().color("Merged.Entity-Name")
-                .replace("%mob%", e.getEntity().getType().getName())
-                .replace("%number%", String.valueOf(merged - 1));
         if(merged - 1 > 0) {
-            //update died entity display name cause it's visible for few seconds after death
-            //and we want to display user real amount, visibility disable doesn't work
-            e.getEntity().setCustomName(displayName);
-
             Entity en = e.getEntity().getWorld().spawnEntity(e.getEntity().getLocation(), e.getEntityType());
-            Utils.noAI(en);
-            en.setCustomName(displayName);
-            en.setCustomNameVisible(true);
+            Utils.setNoAI(en);
+
+            Hologram hologram = HologramsAPI.createHologram(plugin, e.getEntity().getLocation().add(0, 2, 0));
+            hologram.appendTextLine(plugin.getLanguageManager().color("Merged.Entity-Name")
+                    .replace("%mob%", e.getEntity().getType().getName())
+                    .replace("%number%", String.valueOf(merged - 1)));
+            SpawnerEntity spawnerEntity = new SpawnerEntity(hologram, en);
+            plugin.getSpawnersStorage().getSpawnerEntities().add(spawnerEntity);
+
             //pass all metadata values to the new entity
             en.setMetadata("SpivakSpawnersEntity", new FixedMetadataValue(plugin, true));
             en.setMetadata("SpivakSpawnersEntitiesMerged", new FixedMetadataValue(plugin, merged - 1));
@@ -53,12 +57,21 @@ public class EntityListeners implements Listener {
                 en.setMetadata(perk.getMetadataAccessor(), new FixedMetadataValue(plugin, true));
             }
         }
+        applyDeathLoot(e);
+        SpawnerEntity spawnerEntity = plugin.getSpawnersStorage().getSpawnerEntity(e.getEntity());
+        spawnerEntity.getHologram().delete();
+        plugin.getSpawnersStorage().getSpawnerEntities().remove(spawnerEntity);
+    }
+
+    private void applyDeathLoot(EntityDeathEvent e) {
         ThreadLocalRandom rand = ThreadLocalRandom.current();
         if(rand.nextInt(0, 100) <= 10) {
             //todo drop the mob head
         }
+        Entity en = e.getEntity();
+        List<ItemStack> drops = e.getDrops();
         for(SpawnerPerk perk : SpawnerPerk.values()) {
-            if(!e.getEntity().hasMetadata(perk.getMetadataAccessor())) {
+            if(!en.hasMetadata(perk.getMetadataAccessor())) {
                 continue;
             }
             switch(perk) {
@@ -67,15 +80,15 @@ public class EntityListeners implements Listener {
                         break;
                     }
                     //drop one item more from list of drops
-                    e.getEntity().getWorld().dropItemNaturally(e.getEntity().getLocation(), e.getDrops().get(rand.nextInt(e.getDrops().size())));
+                    en.getWorld().dropItemNaturally(en.getLocation(), drops.get(rand.nextInt(drops.size())));
                     break;
                 case BONUS_LOOT_20:
                     if(rand.nextInt(0, 100) > 15) {
                         break;
                     }
                     //drop one item more from list of drops but do this twice
-                    e.getEntity().getWorld().dropItemNaturally(e.getEntity().getLocation(), e.getDrops().get(rand.nextInt(e.getDrops().size())));
-                    e.getEntity().getWorld().dropItemNaturally(e.getEntity().getLocation(), e.getDrops().get(rand.nextInt(e.getDrops().size())));
+                    en.getWorld().dropItemNaturally(en.getLocation(), drops.get(rand.nextInt(drops.size())));
+                    en.getWorld().dropItemNaturally(en.getLocation(), drops.get(rand.nextInt(drops.size())));
                     break;
                 case BONUS_HEADS_1:
                     if(rand.nextInt(0, 100) <= 10) {
@@ -96,7 +109,7 @@ public class EntityListeners implements Listener {
                         break;
                     }
                     //drop one item more from list of drops
-                    e.getEntity().getWorld().dropItemNaturally(e.getEntity().getLocation(), e.getDrops().get(rand.nextInt(e.getDrops().size())));
+                    en.getWorld().dropItemNaturally(en.getLocation(), drops.get(rand.nextInt(drops.size())));
                     break;
                 case DOUBLE_XP:
                     e.setDroppedExp(e.getDroppedExp() * 2);

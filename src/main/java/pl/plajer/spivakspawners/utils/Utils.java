@@ -33,7 +33,7 @@ public class Utils {
      *
      * @param bukkitEntity entity to disable ai
      */
-    public static void noAI(Entity bukkitEntity) {
+    public static void setNoAI(Entity bukkitEntity) {
         net.minecraft.server.v1_8_R3.Entity nmsEntity = ((CraftEntity) bukkitEntity).getHandle();
         NBTTagCompound tag = nmsEntity.getNBTTag();
         if(tag == null) {

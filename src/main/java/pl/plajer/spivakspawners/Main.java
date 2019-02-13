@@ -1,5 +1,7 @@
 package pl.plajer.spivakspawners;
 
+import com.gmail.filoghost.holographicdisplays.api.Hologram;
+import com.gmail.filoghost.holographicdisplays.api.HologramsAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.entity.Entity;
@@ -13,6 +15,7 @@ import pl.plajer.spivakspawners.registry.heads.HeadsRegistry;
 import pl.plajer.spivakspawners.registry.level.LevelsRegistry;
 import pl.plajer.spivakspawners.registry.spawner.buyable.BuyableSpawnersRegistry;
 import pl.plajer.spivakspawners.registry.spawner.living.Spawner;
+import pl.plajer.spivakspawners.registry.spawner.living.SpawnerEntity;
 import pl.plajer.spivakspawners.registry.spawner.living.SpawnersStorage;
 import pl.plajer.spivakspawners.user.User;
 import pl.plajer.spivakspawners.user.UserManager;
@@ -46,6 +49,7 @@ public class Main extends JavaPlugin {
         new JoinQuitListener(this);
         new SpawnerListeners(this);
         new EntityListeners(this);
+        hologramUpdateTask();
     }
 
     @Override
@@ -63,6 +67,9 @@ public class Main extends JavaPlugin {
                 }
             }
         }
+        for(Hologram hologram : HologramsAPI.getHolograms(this)) {
+            hologram.delete();
+        }
     }
 
     private void generateFiles() {
@@ -71,6 +78,14 @@ public class Main extends JavaPlugin {
             ConfigUtils.getConfig(this, file);
         }
      }
+
+    private void hologramUpdateTask() {
+        Bukkit.getScheduler().runTaskTimer(this, () -> {
+            for(SpawnerEntity spawnerEntity : spawnersStorage.getSpawnerEntities()) {
+                spawnerEntity.getHologram().teleport(spawnerEntity.getEntity().getLocation().add(0, 2, 0));
+            }
+        }, 20 * 7, 20 * 7);
+    }
 
     public LanguageManager getLanguageManager() {
         return languageManager;

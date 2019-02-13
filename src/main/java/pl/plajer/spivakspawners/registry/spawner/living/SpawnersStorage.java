@@ -3,6 +3,7 @@ package pl.plajer.spivakspawners.registry.spawner.living;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.entity.Entity;
 import org.jetbrains.annotations.Nullable;
 import pl.plajer.spivakspawners.Main;
 import pl.plajerlair.core.utils.ConfigUtils;
@@ -18,6 +19,7 @@ import java.util.logging.Level;
  */
 public class SpawnersStorage {
 
+    private List<SpawnerEntity> spawnerEntities = new ArrayList<>();
     private List<Spawner> spawnedSpawners = new ArrayList<>();
     private Main plugin;
 
@@ -79,4 +81,19 @@ public class SpawnersStorage {
     public List<Spawner> getSpawnedSpawners() {
         return spawnedSpawners;
     }
+
+    public List<SpawnerEntity> getSpawnerEntities() {
+        return spawnerEntities;
+    }
+
+    @Nullable
+    public SpawnerEntity getSpawnerEntity(Entity en) {
+        for(SpawnerEntity spawnerEntity : spawnerEntities) {
+            if(spawnerEntity.getEntity().equals(en)) {
+                return spawnerEntity;
+            }
+        }
+        return null;
+    }
+
 }

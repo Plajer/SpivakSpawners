@@ -1,5 +1,7 @@
 package pl.plajer.spivakspawners.listeners;
 
+import com.gmail.filoghost.holographicdisplays.api.Hologram;
+import com.gmail.filoghost.holographicdisplays.api.HologramsAPI;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -20,6 +22,7 @@ import pl.plajer.spivakspawners.menus.SpawnerUpgradeMenu;
 import pl.plajer.spivakspawners.registry.spawner.data.SpawnerData;
 import pl.plajer.spivakspawners.registry.spawner.data.SpawnerPerk;
 import pl.plajer.spivakspawners.registry.spawner.living.Spawner;
+import pl.plajer.spivakspawners.registry.spawner.living.SpawnerEntity;
 import pl.plajer.spivakspawners.utils.Utils;
 import pl.plajerlair.core.utils.ItemBuilder;
 
@@ -140,15 +143,16 @@ public class SpawnerListeners implements Listener {
             return;
         }
         e.getSpawner().setDelay(100);
-        Utils.noAI(e.getEntity());
+        Utils.setNoAI(e.getEntity());
         Entity mergeableWith = plugin.getMergeHandler().getNearbyMergeable(e.getEntity());
         if(mergeableWith != null) {
             int mergedEntities = mergeableWith.getMetadata("SpivakSpawnersEntitiesMerged").get(0).asInt();
-            mergeableWith.setMetadata("SpivakSpawnersEntitiesMerged", new FixedMetadataValue(plugin, mergedEntities + 1));
-            mergeableWith.setCustomName(plugin.getLanguageManager().color("Merged.Entity-Name")
+            SpawnerEntity spawnerEntity = plugin.getSpawnersStorage().getSpawnerEntity(mergeableWith);
+            spawnerEntity.getHologram().clearLines();
+            spawnerEntity.getHologram().appendTextLine(plugin.getLanguageManager().color("Merged.Entity-Name")
                     .replace("%mob%", mergeableWith.getType().getName())
                     .replace("%number%", String.valueOf(mergedEntities + 1)));
-            mergeableWith.setCustomNameVisible(true);
+            mergeableWith.setMetadata("SpivakSpawnersEntitiesMerged", new FixedMetadataValue(plugin, mergedEntities + 1));
             e.setCancelled(true);
             return;
         }
@@ -158,6 +162,8 @@ public class SpawnerListeners implements Listener {
             e.getEntity().setMetadata(perk.getMetadataAccessor(), new FixedMetadataValue(plugin, true));
         }
         e.getEntity().setCustomNameVisible(true);
+        Hologram hologram = HologramsAPI.createHologram(plugin, e.getEntity().getLocation().add(0, 2, 0));
+        plugin.getSpawnersStorage().getSpawnerEntities().add(new SpawnerEntity(hologram, e.getEntity()));
     }
 
 }

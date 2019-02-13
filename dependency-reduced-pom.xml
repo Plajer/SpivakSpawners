@@ -56,6 +56,10 @@
       <id>plajerlair-repo</id>
       <url>https://maven.plajer.xyz/minecraft/</url>
     </repository>
+      <repository>
+          <id>filoghost-repo</id>
+          <url>https://ci.filoghost.me/plugin/repository/everything/</url>
+      </repository>
   </repositories>
   <dependencies>
     <dependency>
@@ -126,6 +130,12 @@
         </exclusion>
       </exclusions>
     </dependency>
+      <dependency>
+          <groupId>com.gmail.filoghost.holographicdisplays</groupId>
+          <artifactId>holographicdisplays-api</artifactId>
+          <version>2.3.1</version>
+          <scope>provided</scope>
+      </dependency>
       <dependency>
           <groupId>org.bukkit1.8</groupId>
           <artifactId>bukkit</artifactId>
