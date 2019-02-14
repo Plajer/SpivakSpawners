@@ -3,3 +3,7 @@ author: Plajer
 version: 1.0.0
 main: pl.plajer.spivakspawners.Main
 depend: [HolographicDisplays]
+
+commands:
+  spawners:
+    aliases: [spawner]

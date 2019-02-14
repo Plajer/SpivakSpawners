@@ -6,6 +6,7 @@
     <artifactId>spivakspawners</artifactId>
     <version>1.0.0</version>
     <build>
+        <finalName>SpivakSpawners</finalName>
         <plugins>
             <plugin>
                 <artifactId>maven-compiler-plugin</artifactId>

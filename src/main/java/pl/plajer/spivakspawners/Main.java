@@ -8,6 +8,7 @@ import org.bukkit.World;
 import org.bukkit.entity.Entity;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import pl.plajer.spivakspawners.commands.SpawnerCommand;
 import pl.plajer.spivakspawners.handlers.LanguageManager;
 import pl.plajer.spivakspawners.handlers.MergeHandler;
 import pl.plajer.spivakspawners.listeners.EntityListeners;
@@ -21,6 +22,7 @@ import pl.plajer.spivakspawners.registry.spawner.living.SpawnerEntity;
 import pl.plajer.spivakspawners.registry.spawner.living.SpawnersStorage;
 import pl.plajer.spivakspawners.user.User;
 import pl.plajer.spivakspawners.user.UserManager;
+import pl.plajer.spivakspawners.utils.EntitiesHologramHeights;
 import pl.plajerlair.core.utils.ConfigUtils;
 
 /**
@@ -52,6 +54,7 @@ public class Main extends JavaPlugin {
     new SpawnerListeners(this);
     new EntityListeners(this);
     hologramUpdateTask();
+    new SpawnerCommand(this);
   }
 
   @Override
@@ -84,7 +87,8 @@ public class Main extends JavaPlugin {
   private void hologramUpdateTask() {
     Bukkit.getScheduler().runTaskTimer(this, () -> {
       for (SpawnerEntity spawnerEntity : spawnersStorage.getSpawnerEntities()) {
-        spawnerEntity.getHologram().teleport(spawnerEntity.getEntity().getLocation().add(0, 2, 0));
+        spawnerEntity.getHologram().teleport(spawnerEntity.getEntity().getLocation().add(0,
+            EntitiesHologramHeights.valueOf(spawnerEntity.getEntity().getType().name()).getHeight(), 0));
       }
     }, 20 * 7, 20 * 7);
   }

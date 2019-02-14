@@ -5,6 +5,14 @@ Messages:
   Not-Your-Spawner: "&c&l(✘) &cYou cannot break spawner you don't own!"
   Only-Silk-Touch: "&c&l(✘) &cYou can drop spawners only with silk touch enchantment!"
 
+Commands:
+  Only-Player: "&cCommand executable by players only!"
+  No-Permission: "&c&l(✘) &cYou don't have permission for this command!"
+  Help-Command:
+    Header: "&e&lSpivak Spawners Commands"
+    Description: " &a/spawners heads (/heads) &7- Shows list of all spawner heads\n&
+    /spawners give <type> <amount> (player) &7- Gives spawners"
+
 Menus:
   Shop-Menu:
     Item-Format:
@@ -32,6 +40,10 @@ Drop-Item:
   # Please edit only colors, otherwise it won't work properly :(
   Name: "&e&l%mob% Spawner"
   Lore: "&7Place to combine with other spawners;&7or to spawn entities!"
+
+Drop-Head:
+  Name: "&e&l%mob% Head"
+  Lore: "&7Click to deposit in storage.;&7Can be used to buy spawners!"
 
 Merged:
   Entity-Name: "&e&l%number%x %mob%"

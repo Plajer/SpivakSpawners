@@ -16,6 +16,7 @@ import org.bukkit.metadata.FixedMetadataValue;
 import pl.plajer.spivakspawners.Main;
 import pl.plajer.spivakspawners.registry.spawner.data.SpawnerPerk;
 import pl.plajer.spivakspawners.registry.spawner.living.SpawnerEntity;
+import pl.plajer.spivakspawners.utils.EntitiesHologramHeights;
 import pl.plajer.spivakspawners.utils.Utils;
 
 /**
@@ -42,7 +43,8 @@ public class EntityListeners implements Listener {
       Entity en = e.getEntity().getWorld().spawnEntity(e.getEntity().getLocation(), e.getEntityType());
       Utils.setNoAI(en);
 
-      Hologram hologram = HologramsAPI.createHologram(plugin, e.getEntity().getLocation().add(0, 2, 0));
+      Hologram hologram = HologramsAPI.createHologram(plugin, e.getEntity().getLocation().add(0,
+          EntitiesHologramHeights.valueOf(e.getEntityType().name()).getHeight(), 0));
       hologram.appendTextLine(plugin.getLanguageManager().color("Merged.Entity-Name")
           .replace("%mob%", e.getEntity().getType().getName())
           .replace("%number%", String.valueOf(merged - 1)));
@@ -68,7 +70,7 @@ public class EntityListeners implements Listener {
   private void applyDeathLoot(EntityDeathEvent e) {
     ThreadLocalRandom rand = ThreadLocalRandom.current();
     if (rand.nextInt(0, 100) <= 10) {
-      //todo drop the mob head
+      e.getDrops().add(plugin.getHeadsRegistry().getByEntityType(e.getEntityType()).getItemStack());
     }
     Entity en = e.getEntity();
     List<ItemStack> drops = e.getDrops();

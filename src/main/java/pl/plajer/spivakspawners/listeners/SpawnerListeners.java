@@ -6,6 +6,7 @@ import com.gmail.filoghost.holographicdisplays.api.HologramsAPI;
 import java.util.Arrays;
 
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.CreatureSpawner;
@@ -27,6 +28,7 @@ import pl.plajer.spivakspawners.registry.spawner.data.SpawnerData;
 import pl.plajer.spivakspawners.registry.spawner.data.SpawnerPerk;
 import pl.plajer.spivakspawners.registry.spawner.living.Spawner;
 import pl.plajer.spivakspawners.registry.spawner.living.SpawnerEntity;
+import pl.plajer.spivakspawners.utils.EntitiesHologramHeights;
 import pl.plajer.spivakspawners.utils.Utils;
 import pl.plajerlair.core.utils.ItemBuilder;
 
@@ -134,13 +136,28 @@ public class SpawnerListeners implements Listener {
 
   @EventHandler
   public void onSpawnerSpawn(SpawnerSpawnEvent e) {
+    Location spawnerLocation = null;
     if (e.getSpawner() == null) {
       //still spawned via spawner but 1.8 is buggy so it's not in the event...
-      //just recompensate this with higher spawn delay
-      e.setCancelled(true);
-      return;
+      //we must look for nearest spawner of same type
+      for (Block block : Utils.getNearbyBlocks(e.getLocation(), 5)) {
+        if (block.getType() != Material.MOB_SPAWNER) {
+          continue;
+        }
+        Spawner spawner = plugin.getSpawnersStorage().getByLocation(block.getLocation());
+        if (spawner == null || spawner.getSpawnerData().getEntityType() != e.getEntityType()) {
+          continue;
+        }
+        spawnerLocation = block.getLocation();
+      }
+      //no similar spawners found in the area
+      if (spawnerLocation == null) {
+        return;
+      }
+    } else {
+      spawnerLocation = e.getSpawner().getLocation();
     }
-    Spawner spawner = plugin.getSpawnersStorage().getByLocation(e.getSpawner().getLocation());
+    Spawner spawner = plugin.getSpawnersStorage().getByLocation(spawnerLocation);
     if (spawner == null) {
       return;
     }
@@ -164,7 +181,8 @@ public class SpawnerListeners implements Listener {
       e.getEntity().setMetadata(perk.getMetadataAccessor(), new FixedMetadataValue(plugin, true));
     }
     e.getEntity().setCustomNameVisible(true);
-    Hologram hologram = HologramsAPI.createHologram(plugin, e.getEntity().getLocation().add(0, 2, 0));
+    Hologram hologram = HologramsAPI.createHologram(plugin, e.getEntity().getLocation().add(0,
+        EntitiesHologramHeights.valueOf(e.getEntityType().name()).getHeight(), 0));
     plugin.getSpawnersStorage().getSpawnerEntities().add(new SpawnerEntity(hologram, e.getEntity()));
   }
 
