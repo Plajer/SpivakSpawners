@@ -14,13 +14,13 @@ Commands:
     /spawners give <type> <amount> (player) &7- Gives spawners"
 
 Perk-Rewards:
-  Bonus-Loot-10: "&e10% Extra Loot"
-  Bonus-Loot-20: "&e20% Extra Loot"
-  Bonus-Heads-1: "&eMore chance to drop mob head"
-  Bonus-Xp: "&e50% More EXP"
-  Bonus-Heads-2: "&eMore chance to drop mob head"
-  Bonus-Loot-50: "&e50% Extra Loot"
-  Double-Xp: "&eDouble EXP"
+  Bonus-Loot-10: "&710% Extra Loot"
+  Bonus-Loot-20: "&720% Extra Loot"
+  Bonus-Heads-1: "&7More chance to drop mob head"
+  Bonus-Xp: "&750% More EXP"
+  Bonus-Heads-2: "&7More chance to drop mob head"
+  Bonus-Loot-50: "&750% Extra Loot"
+  Double-Xp: "&7Double EXP"
 
 Menus:
   Shop-Menu:

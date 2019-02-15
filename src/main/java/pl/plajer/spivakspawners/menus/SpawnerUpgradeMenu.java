@@ -40,8 +40,8 @@ public class SpawnerUpgradeMenu {
           item = new ItemBuilder(new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 4))
               .name(plugin.getLanguageManager().color("Menus.Spawner-Overview.Perk-Unlocked-Level.Name")
                   .replace("%level%", String.valueOf(i)))
-              .lore(plugin.getLanguageManager().color("Menus.Spawner-Overview.Perk-Unlocked-Level.Lore"
-                  .replace("%reward%", SpawnerPerk.values()[perkOrdinal].getFormattedName()))
+              .lore(plugin.getLanguageManager().color("Menus.Spawner-Overview.Perk-Unlocked-Level.Lore")
+                  .replace("%reward%", SpawnerPerk.values()[perkOrdinal].getFormattedName())
                   .split(";"))
               .build();
         } else {
@@ -71,9 +71,9 @@ public class SpawnerUpgradeMenu {
                   .replace("%current_level%", String.valueOf(spawner.getSpawnerData().getSpawnerLevel())).split(";"))
               .build();
         }
-        if (perkUpgrade) {
-          perkOrdinal++;
-        }
+      }
+      if (perkUpgrade) {
+        perkOrdinal++;
       }
       pane.addItem(new GuiItem(item, event -> event.setCancelled(true)), x, y);
       y--;

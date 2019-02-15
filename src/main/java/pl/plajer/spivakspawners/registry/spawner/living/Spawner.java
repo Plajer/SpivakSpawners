@@ -57,7 +57,7 @@ public class Spawner implements Serializable {
       objectInputStream.close();
       spawner.location = spawner.spawnerLocation.asLocation();
       if (spawner.location.getBlock().getType() == Material.MOB_SPAWNER) {
-        ((CreatureSpawner) spawner.location.getBlock().getState()).setDelay(100);
+        ((CreatureSpawner) spawner.location.getBlock().getState()).setDelay(20);
       }
       return spawner;
     } catch (IOException | ClassNotFoundException e) {
@@ -76,6 +76,10 @@ public class Spawner implements Serializable {
 
   public List<SpawnerPerk> getPerks() {
     return perks;
+  }
+
+  public boolean shouldApplyPerk() {
+    return getSpawnerData().getSpawnerLevel() % 4 == 0;
   }
 
   public void addPerk(SpawnerPerk perk) {

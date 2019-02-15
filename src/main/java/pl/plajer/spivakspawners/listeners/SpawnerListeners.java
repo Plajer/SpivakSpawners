@@ -78,6 +78,7 @@ public class SpawnerListeners implements Listener {
         e.setCancelled(true);
         return;
       }
+      plugin.getSpawnersStorage().getSpawnedSpawners().remove(spawner);
       e.setExpToDrop(0);
       if (e.getPlayer().getItemInHand().getEnchantments().containsKey(Enchantment.SILK_TOUCH)) {
         CreatureSpawner creatureSpawner = (CreatureSpawner) e.getBlock().getState();
@@ -121,13 +122,16 @@ public class SpawnerListeners implements Listener {
       e.setCancelled(true);
       e.getItemInHand().setAmount(e.getItemInHand().getAmount() - 1);
       spawner.getSpawnerData().setSpawnerLevel(spawner.getSpawnerData().getSpawnerLevel() + 1);
+      if (spawner.shouldApplyPerk()) {
+        spawner.addPerk(SpawnerPerk.values()[(spawner.getSpawnerData().getSpawnerLevel() / 4) - 1]);
+      }
       e.getPlayer().sendMessage(plugin.getLanguageManager().color("Messages.Spawner-Merged")
           .replace("%mob%", EntityDisplayNameFixer.fixDisplayName(spawner.getSpawnerData().getEntityType())));
       return;
     }
     CreatureSpawner creatureSpawner = (CreatureSpawner) e.getBlockPlaced().getState();
     creatureSpawner.setCreatureTypeByName(mob);
-    creatureSpawner.setDelay(50);
+    creatureSpawner.setDelay(20);
     Spawner spawner = new Spawner(e.getPlayer().getUniqueId(), e.getBlockPlaced().getLocation(), creatureSpawner.getSpawnedType());
     e.getBlockPlaced().getWorld().strikeLightningEffect(e.getBlockPlaced().getLocation());
     plugin.getSpawnersStorage().getSpawnedSpawners().add(spawner);
@@ -162,7 +166,7 @@ public class SpawnerListeners implements Listener {
     if (spawner == null) {
       return;
     }
-    e.getSpawner().setDelay(100);
+    e.getSpawner().setDelay(20);
     Utils.setNoAI(e.getEntity());
     Entity mergeableWith = plugin.getMergeHandler().getNearbyMergeable(e.getEntity());
     if (mergeableWith != null) {

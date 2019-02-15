@@ -1,7 +1,5 @@
 package pl.plajer.spivakspawners.listeners;
 
-import org.bukkit.Bukkit;
-import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -43,8 +41,7 @@ public class InteractListener implements Listener {
       e.getPlayer().sendMessage(plugin.getLanguageManager().color("Messages.Added-Head")
           .replace("%amount%", String.valueOf(e.getItem().getAmount()))
           .replace("%mob%", EntityDisplayNameFixer.fixDisplayName(head.getEntityType())));
-      Bukkit.broadcastMessage("removed");
-      e.getPlayer().getItemInHand().setType(Material.AIR);
+      e.getPlayer().getInventory().remove(e.getItem());
       e.getPlayer().updateInventory();
       return;
     }
