@@ -12,7 +12,8 @@ import pl.plajer.spivakspawners.commands.SpawnerCommand;
 import pl.plajer.spivakspawners.handlers.LanguageManager;
 import pl.plajer.spivakspawners.handlers.MergeHandler;
 import pl.plajer.spivakspawners.listeners.EntityListeners;
-import pl.plajer.spivakspawners.listeners.JoinQuitListener;
+import pl.plajer.spivakspawners.listeners.InteractListener;
+import pl.plajer.spivakspawners.listeners.JoinQuitListeners;
 import pl.plajer.spivakspawners.listeners.SpawnerListeners;
 import pl.plajer.spivakspawners.registry.heads.HeadsRegistry;
 import pl.plajer.spivakspawners.registry.level.LevelsRegistry;
@@ -50,9 +51,10 @@ public class Main extends JavaPlugin {
     spawnersStorage = new SpawnersStorage(this);
     userManager = new UserManager(this);
     mergeHandler = new MergeHandler();
-    new JoinQuitListener(this);
+    new JoinQuitListeners(this);
     new SpawnerListeners(this);
     new EntityListeners(this);
+    new InteractListener(this);
     hologramUpdateTask();
     new SpawnerCommand(this);
   }

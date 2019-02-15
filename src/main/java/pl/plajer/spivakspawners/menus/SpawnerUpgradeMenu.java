@@ -11,6 +11,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import pl.plajer.spivakspawners.Main;
 import pl.plajer.spivakspawners.registry.spawner.data.SpawnerData;
+import pl.plajer.spivakspawners.registry.spawner.data.SpawnerPerk;
 import pl.plajer.spivakspawners.registry.spawner.living.Spawner;
 import pl.plajerlair.core.utils.ItemBuilder;
 
@@ -29,6 +30,7 @@ public class SpawnerUpgradeMenu {
 
     int x = 0;
     int y = 3;
+    int perkOrdinal = 0;
     for (int i = 1; i < SpawnerData.MAX_UPGRADE_LEVEL + 1; i++) {
       ItemStack item;
       boolean perkUpgrade = i % 4 == 0;
@@ -37,7 +39,9 @@ public class SpawnerUpgradeMenu {
           item = new ItemBuilder(new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 4))
               .name(plugin.getLanguageManager().color("Menus.Spawner-Overview.Perk-Unlocked-Level.Name")
                   .replace("%level%", String.valueOf(i)))
-              .lore(plugin.getLanguageManager().color("Menus.Spawner-Overview.Perk-Unlocked-Level.Lore").split(";"))
+              .lore(plugin.getLanguageManager().color("Menus.Spawner-Overview.Perk-Unlocked-Level.Lore"
+                  .replace("%reward%", SpawnerPerk.values()[perkOrdinal].getFormattedName()))
+                  .split(";"))
               .build();
         } else {
           item = new ItemBuilder(new ItemStack(Material.INK_SACK, 1, (short) 10))
@@ -53,7 +57,9 @@ public class SpawnerUpgradeMenu {
                   .replace("%level%", String.valueOf(i)))
               .lore(plugin.getLanguageManager().color("Menus.Spawner-Overview.Perk-Locked-Level.Lore")
                   .replace("%mob%", spawner.getSpawnerData().getEntityType().getName())
-                  .replace("%current_level%", String.valueOf(spawner.getSpawnerData().getSpawnerLevel())).split(";"))
+                  .replace("%current_level%", String.valueOf(spawner.getSpawnerData().getSpawnerLevel()))
+                  .replace("%reward%", SpawnerPerk.values()[perkOrdinal].getFormattedName())
+                  .split(";"))
               .build();
         } else {
           item = new ItemBuilder(new ItemStack(Material.INK_SACK, 1, (short) 8))
@@ -63,6 +69,9 @@ public class SpawnerUpgradeMenu {
                   .replace("%mob%", spawner.getSpawnerData().getEntityType().getName())
                   .replace("%current_level%", String.valueOf(spawner.getSpawnerData().getSpawnerLevel())).split(";"))
               .build();
+        }
+        if (perkUpgrade) {
+          perkOrdinal++;
         }
       }
       pane.addItem(new GuiItem(item, event -> event.setCancelled(true)), x, y);

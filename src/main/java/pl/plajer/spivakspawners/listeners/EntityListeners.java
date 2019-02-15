@@ -87,16 +87,14 @@ public class EntityListeners implements Listener {
           en.getWorld().dropItemNaturally(en.getLocation(), drops.get(rand.nextInt(drops.size())));
           break;
         case BONUS_LOOT_20:
-          if (rand.nextInt(0, 100) > 15) {
+          if (rand.nextInt(0, 100) > 20) {
             break;
           }
-          //drop one item more from list of drops but do this twice
-          en.getWorld().dropItemNaturally(en.getLocation(), drops.get(rand.nextInt(drops.size())));
           en.getWorld().dropItemNaturally(en.getLocation(), drops.get(rand.nextInt(drops.size())));
           break;
         case BONUS_HEADS_1:
           if (rand.nextInt(0, 100) <= 10) {
-            //todo drop the mob head
+            e.getDrops().add(plugin.getHeadsRegistry().getByEntityType(e.getEntityType()).getItemStack());
           }
           break;
         case BONUS_XP:
@@ -104,7 +102,7 @@ public class EntityListeners implements Listener {
           break;
         case BONUS_HEADS_2:
           if (rand.nextInt(0, 100) <= 20) {
-            //todo drop the mob head
+            e.getDrops().add(plugin.getHeadsRegistry().getByEntityType(e.getEntityType()).getItemStack());
           }
           break;
         case BONUS_LOOT_50:

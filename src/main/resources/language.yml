@@ -1,5 +1,5 @@
 Messages:
-  Added-Head: "&a&l+ 1 %mob% Head added to storage!"
+  Added-Head: "&a&l+ %amount% %mob% Head added to storage!"
   Spawner-Placed: "&e&lPlaced %mob% Spawner!"
   Spawner-Merged: "&e&lMerged %mob% Spawner!"
   Not-Your-Spawner: "&c&l(✘) &cYou cannot break spawner you don't own!"
@@ -12,6 +12,15 @@ Commands:
     Header: "&e&lSpivak Spawners Commands"
     Description: " &a/spawners heads (/heads) &7- Shows list of all spawner heads\n&
     /spawners give <type> <amount> (player) &7- Gives spawners"
+
+Perk-Rewards:
+  Bonus-Loot-10: "&e10% Extra Loot"
+  Bonus-Loot-20: "&e20% Extra Loot"
+  Bonus-Heads-1: "&eMore chance to drop mob head"
+  Bonus-Xp: "&e50% More EXP"
+  Bonus-Heads-2: "&eMore chance to drop mob head"
+  Bonus-Loot-50: "&e50% Extra Loot"
+  Double-Xp: "&eDouble EXP"
 
 Menus:
   Shop-Menu:
@@ -31,10 +40,15 @@ Menus:
       Lore: "&c&lLOCKED;;&eUpgrade Cost: &71x %mob% Spawner;&eCurrent Level: &7%current_level%"
     Perk-Unlocked-Level:
       Name: "&e&lLevel %level%"
-      Lore: "&a&lUNLOCKED;;&e&lReward:;&7%reward%"
+      Lore: "&a&lUNLOCKED;;&e&lReward: &7%reward%"
     Perk-Locked-Level:
       Name: "&4&lLevel %level%"
-      Lore: "&c&lLOCKED;;&eUpgrade Cost: &71x %mob% Spawner;&eCurrent Level: &7%current_level%;&eReward:;&7%reward%"
+      Lore: "&c&lLOCKED;;&eUpgrade Cost: &71x %mob% Spawner;&eCurrent Level: &7%current_level%;&eReward: &7%reward%"
+  Storage-Menu:
+    Inventory-Name: "&0Heads Storage"
+    Item-Format:
+      Name: "&6&l%mob% Head"
+      Lore: "&7Collected: &e%amount%"
 
 Drop-Item:
   # Please edit only colors, otherwise it won't work properly :(

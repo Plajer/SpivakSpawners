@@ -2,12 +2,14 @@ package pl.plajer.spivakspawners.user;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
 import pl.plajer.spivakspawners.Main;
+import pl.plajer.spivakspawners.registry.heads.Head;
 import pl.plajerlair.core.utils.ConfigUtils;
 
 /**
@@ -46,10 +48,19 @@ public class UserManager {
 
   public void saveData(User user) {
     config.set(user.getPlayer().getUniqueId() + ".Level", user.getLevel());
+    for (Map.Entry<Head, Integer> entry : user.getOwnedHeads().entrySet()) {
+      config.set(user.getPlayer().getUniqueId() + ".Head." + entry.getKey().getEntityType().getName(), entry.getValue());
+    }
     ConfigUtils.saveConfig(plugin, config, "userdata");
   }
 
   public void loadData(User user) {
+    for (Head head : plugin.getHeadsRegistry().getHeads()) {
+      if (!config.isSet(user.getPlayer().getUniqueId() + ".Head." + head.getEntityType().getName())) {
+        continue;
+      }
+      user.loadOwnedHead(head, config.getInt(user.getPlayer().getUniqueId() + ".Head." + head.getEntityType().getName()));
+    }
     user.setLevel(config.getInt(user.getPlayer().getUniqueId() + ".Level", 1));
   }
 

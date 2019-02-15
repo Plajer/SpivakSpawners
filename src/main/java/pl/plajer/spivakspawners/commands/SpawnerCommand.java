@@ -6,6 +6,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import pl.plajer.spivakspawners.Main;
+import pl.plajer.spivakspawners.menus.HeadStorageMenu;
 
 /**
  * @author Plajer
@@ -35,6 +36,7 @@ public class SpawnerCommand implements CommandExecutor {
     }
     switch (args[0].toLowerCase()) {
       case "heads":
+        new HeadStorageMenu((Player) sender);
         return true;
       case "give":
         return true;

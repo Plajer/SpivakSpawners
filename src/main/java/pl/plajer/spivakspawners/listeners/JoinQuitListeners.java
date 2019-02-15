@@ -6,17 +6,18 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
 import pl.plajer.spivakspawners.Main;
+import pl.plajer.spivakspawners.user.User;
 
 /**
  * @author Plajer
  * <p>
  * Created at 12.02.2019
  */
-public class JoinQuitListener implements Listener {
+public class JoinQuitListeners implements Listener {
 
   private Main plugin;
 
-  public JoinQuitListener(Main plugin) {
+  public JoinQuitListeners(Main plugin) {
     this.plugin = plugin;
     plugin.getServer().getPluginManager().registerEvents(this, plugin);
   }
@@ -28,7 +29,9 @@ public class JoinQuitListener implements Listener {
 
   @EventHandler
   public void onQuit(PlayerQuitEvent e) {
-    plugin.getUserManager().saveData(plugin.getUserManager().getUser(e.getPlayer()));
+    User user = plugin.getUserManager().getUser(e.getPlayer());
+    plugin.getUserManager().saveData(user);
+    plugin.getUserManager().removeUser(user);
   }
 
 }
