@@ -5,11 +5,16 @@ import com.gmail.filoghost.holographicdisplays.api.HologramsAPI;
 
 import java.util.Arrays;
 
+import net.minecraft.server.v1_8_R3.BlockPosition;
+import net.minecraft.server.v1_8_R3.NBTTagCompound;
+import net.minecraft.server.v1_8_R3.TileEntityMobSpawner;
+
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.CreatureSpawner;
+import org.bukkit.craftbukkit.v1_8_R3.CraftWorld;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Entity;
 import org.bukkit.event.EventHandler;
@@ -131,7 +136,6 @@ public class SpawnerListeners implements Listener {
     }
     CreatureSpawner creatureSpawner = (CreatureSpawner) e.getBlockPlaced().getState();
     creatureSpawner.setCreatureTypeByName(mob);
-    creatureSpawner.setDelay(20);
     Spawner spawner = new Spawner(e.getPlayer().getUniqueId(), e.getBlockPlaced().getLocation(), creatureSpawner.getSpawnedType());
     e.getBlockPlaced().getWorld().strikeLightningEffect(e.getBlockPlaced().getLocation());
     plugin.getSpawnersStorage().getSpawnedSpawners().add(spawner);
@@ -166,7 +170,21 @@ public class SpawnerListeners implements Listener {
     if (spawner == null) {
       return;
     }
-    e.getSpawner().setDelay(20);
+
+    //todo configurable in config
+    BlockPosition blockPos = new BlockPosition(spawner.getLocation().getBlockX(), spawner.getLocation().getBlockY(), spawner.getLocation().getBlockZ());
+    TileEntityMobSpawner tileSpawner = (TileEntityMobSpawner) ((CraftWorld) spawner.getLocation().getWorld()).getHandle().getTileEntity(blockPos);
+    NBTTagCompound tag = new NBTTagCompound();
+    tag.setString("EntityId", tileSpawner.getSpawner().getMobName());
+    tag.setShort("Delay", (short) 20);
+    tag.setShort("MinSpawnDelay", (short) 20);
+    tag.setShort("MaxSpawnDelay", (short) 40);
+    tag.setShort("SpawnCount", (short) 4);
+    tag.setShort("MaxNearbyEntities", (short) 10);
+    tag.setShort("RequiredPlayerRange", (short) 20);
+    tag.setShort("SpawnRange", (short) 5);
+    tileSpawner.getSpawner().a(tag);
+
     Utils.setNoAI(e.getEntity());
     Entity mergeableWith = plugin.getMergeHandler().getNearbyMergeable(e.getEntity());
     if (mergeableWith != null) {

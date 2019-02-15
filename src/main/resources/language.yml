@@ -10,8 +10,9 @@ Commands:
   No-Permission: "&c&l(✘) &cYou don't have permission for this command!"
   Help-Command:
     Header: "&e&lSpivak Spawners Commands"
-    Description: " &a/spawners heads (/heads) &7- Shows list of all spawner heads\n&
-    /spawners give <type> <amount> (player) &7- Gives spawners"
+    Description: " &a/spawners heads (/heads) &7- Shows list of all spawner heads\n
+    &a/spawners give <type> <amount> (player) &7- Gives spawners\n
+    &a/spawners shop &7- Opens shop with spawners"
 
 Perk-Rewards:
   Bonus-Loot-10: "&710% Extra Loot"
@@ -24,11 +25,12 @@ Perk-Rewards:
 
 Menus:
   Shop-Menu:
+    Inventory-Name: "&0Purchase Spawners"
     Item-Format:
       Name: "&e%mob% &fSpawner"
       Lore: "&7Price: &e%money%$/each"
       Bonus-Lore:
-        Locked: ";&c&lLOCKED;;&eTo unlock the spawner:;&7Heads needed: &e%heads_amount% %mob% Heads;&7Money needed: &e%money%$"
+        Locked: ";&c&lLOCKED;;&eTo unlock the spawner:;&7Level Needed: &e%level_needed%;&7Money needed: &e%money%$"
         Unlocked: "&a&lUNLOCKED"
   Spawner-Overview:
     Inventory-Name: "&0Spawner Levels Overview"

@@ -3,6 +3,7 @@ package pl.plajer.spivakspawners.registry.spawner.buyable;
 import org.bukkit.entity.EntityType;
 
 import pl.plajer.spivakspawners.registry.heads.Head;
+import pl.plajer.spivakspawners.user.User;
 
 /**
  * @author Plajer
@@ -37,6 +38,10 @@ public class BuyableSpawner {
 
   public Head getHeadTypeRequired() {
     return headTypeRequired;
+  }
+
+  public boolean isUnlocked(User user) {
+    return user.getLevel() >= levelNeeded;
   }
 
 }

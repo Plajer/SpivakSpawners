@@ -7,6 +7,7 @@ import org.bukkit.entity.Player;
 
 import pl.plajer.spivakspawners.Main;
 import pl.plajer.spivakspawners.menus.HeadStorageMenu;
+import pl.plajer.spivakspawners.menus.SpawnerShopMenu;
 
 /**
  * @author Plajer
@@ -39,6 +40,9 @@ public class SpawnerCommand implements CommandExecutor {
         new HeadStorageMenu((Player) sender);
         return true;
       case "give":
+        return true;
+      case "shop":
+        new SpawnerShopMenu((Player) sender);
         return true;
       default:
         //todo invalid args

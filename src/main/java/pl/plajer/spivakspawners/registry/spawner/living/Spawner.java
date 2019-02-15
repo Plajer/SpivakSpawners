@@ -57,7 +57,8 @@ public class Spawner implements Serializable {
       objectInputStream.close();
       spawner.location = spawner.spawnerLocation.asLocation();
       if (spawner.location.getBlock().getType() == Material.MOB_SPAWNER) {
-        ((CreatureSpawner) spawner.location.getBlock().getState()).setDelay(20);
+        ((CreatureSpawner) spawner.location.getBlock().getState()).setDelay(5);
+        spawner.location.getBlock().getState().update();
       }
       return spawner;
     } catch (IOException | ClassNotFoundException e) {
