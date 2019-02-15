@@ -36,6 +36,7 @@ public class InteractListener implements Listener {
       if (!e.getItem().getItemMeta().getLore().equals(head.getItemStack().getItemMeta().getLore())) {
         continue;
       }
+      e.setCancelled(true);
       User user = plugin.getUserManager().getUser(e.getPlayer());
       user.addHeadsAmount(head, e.getItem().getAmount());
       e.getPlayer().sendMessage(plugin.getLanguageManager().color("Messages.Added-Head")

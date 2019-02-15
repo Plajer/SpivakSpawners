@@ -21,6 +21,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.block.BlockExplodeEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.SpawnerSpawnEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -66,6 +67,19 @@ public class SpawnerListeners implements Listener {
       }
       //open up spawner menu
       new SpawnerUpgradeMenu(spawner, e.getPlayer());
+    }
+  }
+
+  @EventHandler
+  public void onSpawnerExplode(BlockExplodeEvent e) {
+    if (e.getBlock().getType() != Material.MOB_SPAWNER) {
+      return;
+    }
+    for (Spawner spawner : plugin.getSpawnersStorage().getSpawnedSpawners()) {
+      if (!e.getBlock().getLocation().equals(spawner.getLocation())) {
+        continue;
+      }
+      e.setCancelled(true);
     }
   }
 
@@ -171,14 +185,13 @@ public class SpawnerListeners implements Listener {
       return;
     }
 
-    //todo configurable in config
     BlockPosition blockPos = new BlockPosition(spawner.getLocation().getBlockX(), spawner.getLocation().getBlockY(), spawner.getLocation().getBlockZ());
     TileEntityMobSpawner tileSpawner = (TileEntityMobSpawner) ((CraftWorld) spawner.getLocation().getWorld()).getHandle().getTileEntity(blockPos);
     NBTTagCompound tag = new NBTTagCompound();
     tag.setString("EntityId", tileSpawner.getSpawner().getMobName());
-    tag.setShort("Delay", (short) 20);
-    tag.setShort("MinSpawnDelay", (short) 20);
-    tag.setShort("MaxSpawnDelay", (short) 40);
+    tag.setShort("Delay", (short) 100);
+    tag.setShort("MinSpawnDelay", (short) 100);
+    tag.setShort("MaxSpawnDelay", (short) 160);
     tag.setShort("SpawnCount", (short) 4);
     tag.setShort("MaxNearbyEntities", (short) 10);
     tag.setShort("RequiredPlayerRange", (short) 20);

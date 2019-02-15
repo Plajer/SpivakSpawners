@@ -12,8 +12,6 @@ import java.util.List;
 import java.util.UUID;
 
 import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.block.CreatureSpawner;
 import org.bukkit.entity.EntityType;
 
 import pl.plajer.spivakspawners.registry.spawner.data.SpawnerData;
@@ -56,10 +54,6 @@ public class Spawner implements Serializable {
       Spawner spawner = (Spawner) objectInputStream.readObject();
       objectInputStream.close();
       spawner.location = spawner.spawnerLocation.asLocation();
-      if (spawner.location.getBlock().getType() == Material.MOB_SPAWNER) {
-        ((CreatureSpawner) spawner.location.getBlock().getState()).setDelay(5);
-        spawner.location.getBlock().getState().update();
-      }
       return spawner;
     } catch (IOException | ClassNotFoundException e) {
       e.printStackTrace();
