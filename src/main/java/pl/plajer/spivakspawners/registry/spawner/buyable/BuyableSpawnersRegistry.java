@@ -46,7 +46,7 @@ public class BuyableSpawnersRegistry {
         plugin.getLogger().log(Level.WARNING, "No related head type found for spawner " + key);
         continue;
       }
-      buyableSpawners.add(new BuyableSpawner(entity, config.getInt(access + "Level"), config.getInt(access + "Cost"), relatedHead));
+      buyableSpawners.add(new BuyableSpawner(entity, config.getInt(access + "Level"), config.getInt(access + "Price"), relatedHead));
     }
   }
 

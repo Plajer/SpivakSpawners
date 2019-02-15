@@ -200,9 +200,9 @@ public class SpawnerListeners implements Listener {
 
     Utils.setNoAI(e.getEntity());
     Entity mergeableWith = plugin.getMergeHandler().getNearbyMergeable(e.getEntity());
-    if (mergeableWith != null) {
+    SpawnerEntity spawnerEntity = plugin.getSpawnersStorage().getSpawnerEntity(mergeableWith);
+    if (mergeableWith != null && spawnerEntity != null) {
       int mergedEntities = mergeableWith.getMetadata("SpivakSpawnersEntitiesMerged").get(0).asInt();
-      SpawnerEntity spawnerEntity = plugin.getSpawnersStorage().getSpawnerEntity(mergeableWith);
       spawnerEntity.getHologram().clearLines();
       spawnerEntity.getHologram().appendTextLine(plugin.getLanguageManager().color("Merged.Entity-Name")
           .replace("%mob%", EntityDisplayNameFixer.fixDisplayName(mergeableWith.getType()))
