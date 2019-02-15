@@ -44,18 +44,6 @@ public enum EntityHeadConstants {
     this.base64Texture = base64Texture;
   }
 
-  //todo
-  public static String fixNameForMHFSkull(EntityType entityType) {
-    switch (entityType.getName()) {
-      case "Ozelot":
-        return "Ocelot";
-      case "VillagerGolem":
-        return "Golem";
-      default:
-        return entityType.getName();
-    }
-  }
-
   public static ItemStack getValidSkull(EntityType type) {
     return Utils.getSkull(valueOf(type.name()).getBase64Texture());
   }

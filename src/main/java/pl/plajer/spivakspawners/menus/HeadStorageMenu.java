@@ -10,6 +10,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import pl.plajer.spivakspawners.Main;
 import pl.plajer.spivakspawners.registry.heads.Head;
 import pl.plajer.spivakspawners.user.User;
+import pl.plajer.spivakspawners.utils.EntityDisplayNameFixer;
 import pl.plajer.spivakspawners.utils.EntityHeadConstants;
 import pl.plajerlair.core.utils.ItemBuilder;
 
@@ -32,7 +33,7 @@ public class HeadStorageMenu {
     for (Head head : plugin.getHeadsRegistry().getHeads()) {
       pane.addItem(new GuiItem(new ItemBuilder(EntityHeadConstants.getValidSkull(head.getEntityType()))
           .name(plugin.getLanguageManager().color("Menus.Storage-Menu.Item-Format.Name")
-              .replace("%mob%", head.getEntityType().getName()))
+              .replace("%mob%", EntityDisplayNameFixer.fixDisplayName(head.getEntityType())))
           .lore(plugin.getLanguageManager().color("Menus.Storage-Menu.Item-Format.Lore")
               .replace("%amount%", String.valueOf(user.getOwnedHeads(head))).split(";")).build(),
           e -> e.setCancelled(true)), x, y);

@@ -13,6 +13,7 @@ import pl.plajer.spivakspawners.Main;
 import pl.plajer.spivakspawners.registry.spawner.data.SpawnerData;
 import pl.plajer.spivakspawners.registry.spawner.data.SpawnerPerk;
 import pl.plajer.spivakspawners.registry.spawner.living.Spawner;
+import pl.plajer.spivakspawners.utils.EntityDisplayNameFixer;
 import pl.plajerlair.core.utils.ItemBuilder;
 
 /**
@@ -56,7 +57,7 @@ public class SpawnerUpgradeMenu {
               .name(plugin.getLanguageManager().color("Menus.Spawner-Overview.Perk-Locked-Level.Name")
                   .replace("%level%", String.valueOf(i)))
               .lore(plugin.getLanguageManager().color("Menus.Spawner-Overview.Perk-Locked-Level.Lore")
-                  .replace("%mob%", spawner.getSpawnerData().getEntityType().getName())
+                  .replace("%mob%", EntityDisplayNameFixer.fixDisplayName(spawner.getSpawnerData().getEntityType()))
                   .replace("%current_level%", String.valueOf(spawner.getSpawnerData().getSpawnerLevel()))
                   .replace("%reward%", SpawnerPerk.values()[perkOrdinal].getFormattedName())
                   .split(";"))
@@ -66,7 +67,7 @@ public class SpawnerUpgradeMenu {
               .name(plugin.getLanguageManager().color("Menus.Spawner-Overview.Locked-Level.Name")
                   .replace("%level%", String.valueOf(i)))
               .lore(plugin.getLanguageManager().color("Menus.Spawner-Overview.Locked-Level.Lore")
-                  .replace("%mob%", spawner.getSpawnerData().getEntityType().getName())
+                  .replace("%mob%", EntityDisplayNameFixer.fixDisplayName(spawner.getSpawnerData().getEntityType()))
                   .replace("%current_level%", String.valueOf(spawner.getSpawnerData().getSpawnerLevel())).split(";"))
               .build();
         }

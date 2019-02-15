@@ -29,6 +29,7 @@ import pl.plajer.spivakspawners.registry.spawner.data.SpawnerPerk;
 import pl.plajer.spivakspawners.registry.spawner.living.Spawner;
 import pl.plajer.spivakspawners.registry.spawner.living.SpawnerEntity;
 import pl.plajer.spivakspawners.utils.EntitiesHologramHeights;
+import pl.plajer.spivakspawners.utils.EntityDisplayNameFixer;
 import pl.plajer.spivakspawners.utils.Utils;
 import pl.plajerlair.core.utils.ItemBuilder;
 
@@ -121,7 +122,7 @@ public class SpawnerListeners implements Listener {
       e.getItemInHand().setAmount(e.getItemInHand().getAmount() - 1);
       spawner.getSpawnerData().setSpawnerLevel(spawner.getSpawnerData().getSpawnerLevel() + 1);
       e.getPlayer().sendMessage(plugin.getLanguageManager().color("Messages.Spawner-Merged")
-          .replace("%mob%", spawner.getSpawnerData().getEntityType().getName()));
+          .replace("%mob%", EntityDisplayNameFixer.fixDisplayName(spawner.getSpawnerData().getEntityType())));
       return;
     }
     CreatureSpawner creatureSpawner = (CreatureSpawner) e.getBlockPlaced().getState();
@@ -131,7 +132,7 @@ public class SpawnerListeners implements Listener {
     e.getBlockPlaced().getWorld().strikeLightningEffect(e.getBlockPlaced().getLocation());
     plugin.getSpawnersStorage().getSpawnedSpawners().add(spawner);
     e.getPlayer().sendMessage(plugin.getLanguageManager().color("Messages.Spawner-Placed")
-        .replace("%mob%", spawner.getSpawnerData().getEntityType().getName()));
+        .replace("%mob%", EntityDisplayNameFixer.fixDisplayName(spawner.getSpawnerData().getEntityType())));
   }
 
   @EventHandler
@@ -169,7 +170,7 @@ public class SpawnerListeners implements Listener {
       SpawnerEntity spawnerEntity = plugin.getSpawnersStorage().getSpawnerEntity(mergeableWith);
       spawnerEntity.getHologram().clearLines();
       spawnerEntity.getHologram().appendTextLine(plugin.getLanguageManager().color("Merged.Entity-Name")
-          .replace("%mob%", mergeableWith.getType().getName())
+          .replace("%mob%", EntityDisplayNameFixer.fixDisplayName(mergeableWith.getType()))
           .replace("%number%", String.valueOf(mergedEntities + 1)));
       mergeableWith.setMetadata("SpivakSpawnersEntitiesMerged", new FixedMetadataValue(plugin, mergedEntities + 1));
       e.setCancelled(true);

@@ -17,6 +17,7 @@ import pl.plajer.spivakspawners.Main;
 import pl.plajer.spivakspawners.registry.spawner.data.SpawnerPerk;
 import pl.plajer.spivakspawners.registry.spawner.living.SpawnerEntity;
 import pl.plajer.spivakspawners.utils.EntitiesHologramHeights;
+import pl.plajer.spivakspawners.utils.EntityDisplayNameFixer;
 import pl.plajer.spivakspawners.utils.Utils;
 
 /**
@@ -46,7 +47,7 @@ public class EntityListeners implements Listener {
       Hologram hologram = HologramsAPI.createHologram(plugin, e.getEntity().getLocation().add(0,
           EntitiesHologramHeights.valueOf(e.getEntityType().name()).getHeight(), 0));
       hologram.appendTextLine(plugin.getLanguageManager().color("Merged.Entity-Name")
-          .replace("%mob%", e.getEntity().getType().getName())
+          .replace("%mob%", EntityDisplayNameFixer.fixDisplayName(e.getEntityType()))
           .replace("%number%", String.valueOf(merged - 1)));
       SpawnerEntity spawnerEntity = new SpawnerEntity(hologram, en);
       plugin.getSpawnersStorage().getSpawnerEntities().add(spawnerEntity);

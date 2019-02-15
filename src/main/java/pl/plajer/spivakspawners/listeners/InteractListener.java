@@ -9,6 +9,7 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import pl.plajer.spivakspawners.Main;
 import pl.plajer.spivakspawners.registry.heads.Head;
 import pl.plajer.spivakspawners.user.User;
+import pl.plajer.spivakspawners.utils.EntityDisplayNameFixer;
 
 /**
  * @author Plajer
@@ -41,7 +42,7 @@ public class InteractListener implements Listener {
       user.addHeadsAmount(head, e.getItem().getAmount());
       e.getPlayer().sendMessage(plugin.getLanguageManager().color("Messages.Added-Head")
           .replace("%amount%", String.valueOf(e.getItem().getAmount()))
-          .replace("%mob%", head.getEntityType().getName()));
+          .replace("%mob%", EntityDisplayNameFixer.fixDisplayName(head.getEntityType())));
       Bukkit.broadcastMessage("removed");
       e.getPlayer().getItemInHand().setType(Material.AIR);
       e.getPlayer().updateInventory();

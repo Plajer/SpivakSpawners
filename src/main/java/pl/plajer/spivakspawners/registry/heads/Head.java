@@ -5,6 +5,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import pl.plajer.spivakspawners.Main;
+import pl.plajer.spivakspawners.utils.EntityDisplayNameFixer;
 import pl.plajer.spivakspawners.utils.EntityHeadConstants;
 import pl.plajerlair.core.utils.ItemBuilder;
 
@@ -25,7 +26,7 @@ public class Head {
     this.entityType = entityType;
     ItemStack stack = EntityHeadConstants.getValidSkull(entityType);
     this.itemStack = new ItemBuilder(stack).name(plugin.getLanguageManager().color("Drop-Head.Name")
-        .replace("%mob%", entityType.getName()))
+        .replace("%mob%", EntityDisplayNameFixer.fixDisplayName(entityType)))
         .lore(plugin.getLanguageManager().color("Drop-Head.Lore").split(";")).build();
   }
 
