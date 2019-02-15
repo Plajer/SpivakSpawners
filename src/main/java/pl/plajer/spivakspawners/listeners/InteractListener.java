@@ -1,5 +1,7 @@
 package pl.plajer.spivakspawners.listeners;
 
+import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -24,11 +26,15 @@ public class InteractListener implements Listener {
 
   @EventHandler
   public void onInteract(PlayerInteractEvent e) {
-    if (e.getItem() == null) {
+    if (e.getItem() == null || !e.getItem().hasItemMeta() || !e.getItem().getItemMeta().hasDisplayName()
+        || !e.getItem().getItemMeta().hasLore()) {
       return;
     }
     for (Head head : plugin.getHeadsRegistry().getHeads()) {
-      if (!e.getItem().isSimilar(head.getItemStack())) {
+      if (!e.getItem().getItemMeta().getDisplayName().equals(head.getItemStack().getItemMeta().getDisplayName())) {
+        continue;
+      }
+      if (!e.getItem().getItemMeta().getLore().equals(head.getItemStack().getItemMeta().getLore())) {
         continue;
       }
       User user = plugin.getUserManager().getUser(e.getPlayer());
@@ -36,7 +42,9 @@ public class InteractListener implements Listener {
       e.getPlayer().sendMessage(plugin.getLanguageManager().color("Messages.Added-Head")
           .replace("%amount%", String.valueOf(e.getItem().getAmount()))
           .replace("%mob%", head.getEntityType().getName()));
-      e.getItem().setAmount(0);
+      Bukkit.broadcastMessage("removed");
+      e.getPlayer().getItemInHand().setType(Material.AIR);
+      e.getPlayer().updateInventory();
       return;
     }
   }

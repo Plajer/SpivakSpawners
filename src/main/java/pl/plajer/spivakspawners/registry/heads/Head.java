@@ -1,12 +1,11 @@
 package pl.plajer.spivakspawners.registry.heads;
 
-import org.bukkit.Material;
 import org.bukkit.entity.EntityType;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import pl.plajer.spivakspawners.Main;
+import pl.plajer.spivakspawners.utils.EntityHeadConstants;
 import pl.plajerlair.core.utils.ItemBuilder;
 
 /**
@@ -24,10 +23,7 @@ public class Head {
 
   public Head(EntityType entityType) {
     this.entityType = entityType;
-    ItemStack stack = new ItemStack(Material.SKULL_ITEM, 1, (short) 3);
-    SkullMeta meta = (SkullMeta) stack.getItemMeta();
-    meta.setOwner("MHF_" + entityType.getName().replace("_", ""));
-    stack.setItemMeta(meta);
+    ItemStack stack = EntityHeadConstants.getValidSkull(entityType);
     this.itemStack = new ItemBuilder(stack).name(plugin.getLanguageManager().color("Drop-Head.Name")
         .replace("%mob%", entityType.getName()))
         .lore(plugin.getLanguageManager().color("Drop-Head.Lore").split(";")).build();
