@@ -17,6 +17,11 @@ Commands:
     &a/spawners shop &7- Opens shop with spawners"
   Received-Spawner: "&a&l(✔) &aYou received &e&l%amount%x %mob% Spawner(s)&a!"
   Invalid-Player: "&c&l(✘) &cThat player doesn't exist!"
+  Rank-Up:
+    Max-Level: "&6&l(✘) &6You're already on maximum level!"
+    No-Money: "&c&l(✘) &cYou don't have enough money to level up! You need &e%more% more&c!"
+    No-Heads: "&c&l(✘) &cYou don't have enough heads to level up! You need &e%more% more&c!"
+    Success: "&a&l(✔) &aSuccessfully promoted to &elevel %level&a! Unlocked new spawner type!"
 
 Perk-Rewards:
   Bonus-Loot-10: "&710% Extra Loot"

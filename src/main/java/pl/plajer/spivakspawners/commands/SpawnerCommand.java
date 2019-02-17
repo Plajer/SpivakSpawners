@@ -14,7 +14,9 @@ import org.bukkit.inventory.ItemStack;
 import pl.plajer.spivakspawners.Main;
 import pl.plajer.spivakspawners.menus.HeadStorageMenu;
 import pl.plajer.spivakspawners.menus.SpawnerShopMenu;
+import pl.plajer.spivakspawners.registry.level.Level;
 import pl.plajer.spivakspawners.registry.spawner.buyable.BuyableSpawner;
+import pl.plajer.spivakspawners.user.User;
 import pl.plajer.spivakspawners.utils.EntityDisplayNameFixer;
 import pl.plajerlair.core.utils.ItemBuilder;
 
@@ -94,6 +96,36 @@ public class SpawnerCommand implements CommandExecutor {
         new SpawnerShopMenu((Player) sender);
         return true;
       case "rankup":
+        User user = plugin.getUserManager().getUser((Player) sender);
+        int nextLevelNumber = user.getLevel() + 1;
+        Level nextLevel = null;
+        for (Level level : plugin.getLevelsRegistry().getLevels()) {
+          if (level.getLevel() == nextLevelNumber) {
+            nextLevel = level;
+          }
+        }
+        //max level
+        if (nextLevel == null) {
+          sender.sendMessage(plugin.getLanguageManager().color("Commands.Rank-Up.Max-Level"));
+          return true;
+        }
+        int headsOwned = user.getOwnedHeads(nextLevel.getHead());
+        if (headsOwned < nextLevel.getHeadsNeeded()) {
+          sender.sendMessage(plugin.getLanguageManager().color("Commands.Rank-Up.No-Heads")
+              .replace("%more%", String.valueOf(nextLevel.getHeadsNeeded() - headsOwned)));
+          return true;
+        }
+        double balance = plugin.getEconomy().getBalance((Player) sender);
+        if (balance < nextLevel.getMoneyNeeded()) {
+          sender.sendMessage(plugin.getLanguageManager().color("Commands.Rank-Up.No-Money")
+              .replace("%more%", String.valueOf(nextLevel.getMoneyNeeded() - balance)));
+          return true;
+        }
+        user.setLevel(nextLevelNumber);
+        plugin.getEconomy().withdrawPlayer((Player) sender, nextLevel.getMoneyNeeded());
+        user.getOwnedHeads().put(nextLevel.getHead(), user.getOwnedHeads(nextLevel.getHead()) - nextLevel.getHeadsNeeded());
+        sender.sendMessage(plugin.getLanguageManager().color("Commands.Rank-Up.Success")
+            .replace("%level%", String.valueOf(nextLevelNumber)));
         return true;
       default:
         sender.sendMessage(plugin.getLanguageManager().color("Commands.Help-Command.Header"));

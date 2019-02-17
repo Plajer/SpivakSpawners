@@ -3,12 +3,16 @@ package pl.plajer.spivakspawners;
 import com.gmail.filoghost.holographicdisplays.api.Hologram;
 import com.gmail.filoghost.holographicdisplays.api.HologramsAPI;
 
+import net.milkbowl.vault.economy.Economy;
+
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.entity.Entity;
+import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import pl.plajer.spivakspawners.commands.SpawnerCommand;
+import pl.plajer.spivakspawners.commands.aliases.HeadsCommand;
 import pl.plajer.spivakspawners.handlers.LanguageManager;
 import pl.plajer.spivakspawners.handlers.MergeHandler;
 import pl.plajer.spivakspawners.listeners.EntityListeners;
@@ -33,6 +37,7 @@ import pl.plajerlair.core.utils.ConfigUtils;
  */
 public class Main extends JavaPlugin {
 
+  private Economy economy = null;
   private LanguageManager languageManager;
   private LevelsRegistry levelsRegistry;
   private HeadsRegistry headsRegistry;
@@ -44,6 +49,7 @@ public class Main extends JavaPlugin {
   @Override
   public void onEnable() {
     generateFiles();
+    setupEconomy();
     this.languageManager = new LanguageManager(this);
     headsRegistry = new HeadsRegistry(this);
     levelsRegistry = new LevelsRegistry(this);
@@ -57,6 +63,7 @@ public class Main extends JavaPlugin {
     new InteractListener(this);
     hologramUpdateTask();
     new SpawnerCommand(this);
+    new HeadsCommand(this);
   }
 
   @Override
@@ -93,6 +100,22 @@ public class Main extends JavaPlugin {
             EntitiesHologramHeights.valueOf(spawnerEntity.getEntity().getType().name()).getHeight(), 0));
       }
     }, 20 * 7, 20 * 7);
+  }
+
+  private boolean setupEconomy() {
+    if (getServer().getPluginManager().getPlugin("Vault") == null) {
+      return false;
+    }
+    RegisteredServiceProvider<Economy> rsp = getServer().getServicesManager().getRegistration(Economy.class);
+    if (rsp == null) {
+      return false;
+    }
+    economy = rsp.getProvider();
+    return economy != null;
+  }
+
+  public Economy getEconomy() {
+    return economy;
   }
 
   public LanguageManager getLanguageManager() {

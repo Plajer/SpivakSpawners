@@ -2,8 +2,10 @@ name: SpivakSpawners
 author: Plajer
 version: 1.0.0
 main: pl.plajer.spivakspawners.Main
-depend: [HolographicDisplays]
+depend: [HolographicDisplays, Vault]
 
 commands:
   spawners:
     aliases: [spawner]
+  heads:
+    aliases: [head]
