@@ -8,11 +8,15 @@ Messages:
 Commands:
   Only-Player: "&cCommand executable by players only!"
   No-Permission: "&c&l(✘) &cYou don't have permission for this command!"
+  Type-Argument: "&c&l(✘) &cPlease type valid command (%command%) to continue!"
+  Invalid-Spawner: "&c&l(✘) &cInvalid spawner type! Valid types: %types%"
   Help-Command:
     Header: "&e&lSpivak Spawners Commands"
     Description: " &a/spawners heads (/heads) &7- Shows list of all spawner heads\n
     &a/spawners give <type> <amount> (player) &7- Gives spawners\n
     &a/spawners shop &7- Opens shop with spawners"
+  Received-Spawner: "&a&l(✔) &aYou received &e&l%amount%x %mob% Spawner(s)&a!"
+  Invalid-Player: "&c&l(✘) &cThat player doesn't exist!"
 
 Perk-Rewards:
   Bonus-Loot-10: "&710% Extra Loot"
