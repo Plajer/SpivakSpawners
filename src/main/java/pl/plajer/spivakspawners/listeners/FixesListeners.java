@@ -17,10 +17,7 @@ import pl.plajer.spivakspawners.Main;
  */
 public class FixesListeners implements Listener {
 
-  private Main plugin;
-
   public FixesListeners(Main plugin) {
-    this.plugin = plugin;
     plugin.getServer().getPluginManager().registerEvents(this, plugin);
   }
 

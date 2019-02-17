@@ -87,7 +87,7 @@ public class SpawnerCommand implements CommandExecutor {
           }
           target = argTarget;
         }
-        Utils.giveSpawner(target, spawner, Integer.valueOf(args[2]));
+        Utils.giveSpawner(target, spawner, Integer.parseInt(args[2]));
         return true;
       case "shop":
         new SpawnerShopMenu((Player) sender);
