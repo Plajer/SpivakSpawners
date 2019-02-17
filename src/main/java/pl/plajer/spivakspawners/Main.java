@@ -117,7 +117,7 @@ public class Main extends JavaPlugin {
         entity.getHologram().delete();
         spawnersStorage.getSpawnerEntities().remove(entity);
       }
-    }, 20 * 3, 20 * 3);
+    }, 20, 20);
   }
 
   private boolean setupEconomy() {

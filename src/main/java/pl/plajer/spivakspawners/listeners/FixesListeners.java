@@ -1,8 +1,6 @@
 package pl.plajer.spivakspawners.listeners;
 
-import org.bukkit.entity.MagmaCube;
 import org.bukkit.entity.Player;
-import org.bukkit.entity.Slime;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
@@ -21,13 +19,10 @@ public class FixesListeners implements Listener {
     plugin.getServer().getPluginManager().registerEvents(this, plugin);
   }
 
-  //fix to make slimes and magma cubes don't damage players
+  //fix to make spawner entities not attack player
   @EventHandler
   public void onPlayerDamage(EntityDamageByEntityEvent e) {
     if (!(e.getEntity() instanceof Player)) {
-      return;
-    }
-    if (!(e.getDamager() instanceof Slime) || !(e.getDamager() instanceof MagmaCube)) {
       return;
     }
     if (e.getDamager().hasMetadata("SpivakSpawnersEntity")) {
