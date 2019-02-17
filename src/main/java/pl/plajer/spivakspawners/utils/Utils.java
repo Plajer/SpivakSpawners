@@ -8,13 +8,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import net.minecraft.server.v1_8_R3.NBTTagCompound;
+import net.minecraft.server.v1_8_R3.GenericAttributes;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
-import org.bukkit.craftbukkit.v1_8_R3.entity.CraftEntity;
-import org.bukkit.entity.Entity;
+import org.bukkit.craftbukkit.v1_8_R3.entity.CraftLivingEntity;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.SkullMeta;
@@ -50,15 +50,18 @@ public class Utils {
    *
    * @param bukkitEntity entity to disable ai
    */
-  public static void setNoAI(Entity bukkitEntity) {
-    net.minecraft.server.v1_8_R3.Entity nmsEntity = ((CraftEntity) bukkitEntity).getHandle();
+  public static void setNoAI(LivingEntity bukkitEntity) {
+    ((CraftLivingEntity) bukkitEntity).getHandle().getAttributeInstance(GenericAttributes.MOVEMENT_SPEED).setValue(0);
+    ((CraftLivingEntity) bukkitEntity).getHandle().getAttributeInstance(GenericAttributes.ATTACK_DAMAGE).setValue(0);
+    ((CraftLivingEntity) bukkitEntity).getHandle().getAttributeInstance(GenericAttributes.c).setValue(1.0);
+    /*net.minecraft.server.v1_8_R3.Entity nmsEntity = ((CraftEntity) bukkitEntity).getHandle();
     NBTTagCompound tag = nmsEntity.getNBTTag();
     if (tag == null) {
       tag = new NBTTagCompound();
     }
     nmsEntity.c(tag);
     tag.setInt("NoAI", 1);
-    nmsEntity.f(tag);
+    nmsEntity.f(tag);*/
   }
 
   public static ItemStack getSkull(String url) {

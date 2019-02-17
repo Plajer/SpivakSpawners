@@ -59,7 +59,7 @@ public class SpawnerCommand implements CommandExecutor {
         String mobType = args[1];
         BuyableSpawner spawner = null;
         for (BuyableSpawner buyableSpawner : plugin.getBuyableSpawnersRegistry().getBuyableSpawners()) {
-          if (!buyableSpawner.getHeadTypeRequired().getEntityType().getName().equals(mobType.toUpperCase())) {
+          if (!buyableSpawner.getHeadTypeRequired().getEntityType().name().equals(mobType.toUpperCase())) {
             continue;
           }
           spawner = buyableSpawner;
@@ -67,7 +67,7 @@ public class SpawnerCommand implements CommandExecutor {
         if (spawner == null) {
           sender.sendMessage(plugin.getLanguageManager().color("Commands.Invalid-Spawner").replace("%types%",
               Arrays.toString(plugin.getBuyableSpawnersRegistry().getBuyableSpawners().stream()
-                  .map(spwn -> spwn.getHeadTypeRequired().getEntityType().getName()).toArray())));
+                  .map(spwn -> spwn.getHeadTypeRequired().getEntityType().name().toLowerCase()).toArray())));
           return true;
         }
         if (args.length == 2) {

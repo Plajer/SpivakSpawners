@@ -31,4 +31,25 @@ public class EntityDisplayNameFixer {
     }
   }
 
+  public static String fromFixedDisplayName(String displayName) {
+    switch (displayName) {
+      case "Ocelot":
+        return "Ozelot";
+      case "Iron Golem":
+        return "VillagerGolem";
+      case "Mushroom Cow":
+        return "MushroomCow";
+      case "Magma Cube":
+        return "LavaSlime";
+      case "Cave Spider":
+        return "CaveSpider";
+      case "Pigman":
+        return "PigZombie";
+      case "Horse":
+        return "EntityHorse";
+      default:
+        return displayName;
+    }
+  }
+
 }

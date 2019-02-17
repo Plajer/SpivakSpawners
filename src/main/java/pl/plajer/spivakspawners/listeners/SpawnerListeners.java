@@ -16,7 +16,10 @@ import org.bukkit.block.Block;
 import org.bukkit.block.CreatureSpawner;
 import org.bukkit.craftbukkit.v1_8_R3.CraftWorld;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.Ageable;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Slime;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
@@ -103,7 +106,7 @@ public class SpawnerListeners implements Listener {
         CreatureSpawner creatureSpawner = (CreatureSpawner) e.getBlock().getState();
         e.getBlock().getWorld().dropItemNaturally(e.getBlock().getLocation(), new ItemBuilder(new ItemStack(e.getBlock().getType(),
             spawner.getSpawnerData().getSpawnerLevel()))
-            .name(plugin.getLanguageManager().color("Drop-Item.Name").replace("%mob%", creatureSpawner.getCreatureTypeName()))
+            .name(plugin.getLanguageManager().color("Drop-Item.Name").replace("%mob%", EntityDisplayNameFixer.fixDisplayName(creatureSpawner.getSpawnedType())))
             .lore(plugin.getLanguageManager().color("Drop-Item.Lore").split(";"))
             .build());
         return;
@@ -125,7 +128,7 @@ public class SpawnerListeners implements Listener {
       return;
     }
     String mob = ChatColor.stripColor(e.getPlayer().getItemInHand().getItemMeta().getDisplayName());
-    mob = mob.replace(" Spawner", "");
+    mob = EntityDisplayNameFixer.fromFixedDisplayName(mob.replace(" Spawner", ""));
     for (Block block : Utils.getNearbyBlocks(e.getBlockPlaced().getLocation(), 3)) {
       if (block.getType() != Material.MOB_SPAWNER) {
         continue;
@@ -139,7 +142,11 @@ public class SpawnerListeners implements Listener {
         continue;
       }
       e.setCancelled(true);
-      e.getItemInHand().setAmount(e.getItemInHand().getAmount() - 1);
+      if (e.getItemInHand().getAmount() > 1) {
+        e.getItemInHand().setAmount(e.getItemInHand().getAmount() - 1);
+      } else {
+        e.getPlayer().getInventory().remove(e.getItemInHand());
+      }
       spawner.getSpawnerData().setSpawnerLevel(spawner.getSpawnerData().getSpawnerLevel() + 1);
       if (spawner.shouldApplyPerk()) {
         spawner.addPerk(SpawnerPerk.values()[(spawner.getSpawnerData().getSpawnerLevel() / 4) - 1]);
@@ -198,7 +205,7 @@ public class SpawnerListeners implements Listener {
     tag.setShort("SpawnRange", (short) 5);
     tileSpawner.getSpawner().a(tag);
 
-    Utils.setNoAI(e.getEntity());
+    Utils.setNoAI((LivingEntity) e.getEntity());
     Entity mergeableWith = plugin.getMergeHandler().getNearbyMergeable(e.getEntity());
     SpawnerEntity spawnerEntity = plugin.getSpawnersStorage().getSpawnerEntity(mergeableWith);
     if (mergeableWith != null && spawnerEntity != null) {
@@ -220,6 +227,13 @@ public class SpawnerListeners implements Listener {
     Hologram hologram = HologramsAPI.createHologram(plugin, e.getEntity().getLocation().add(0,
         EntitiesHologramHeights.valueOf(e.getEntityType().name()).getHeight(), 0));
     plugin.getSpawnersStorage().getSpawnerEntities().add(new SpawnerEntity(hologram, e.getEntity()));
+
+    if (e.getEntity() instanceof Slime) {
+      ((Slime) e.getEntity()).setSize(2);
+    }
+    if (e.getEntity() instanceof Ageable) {
+      ((Ageable) e.getEntity()).setAdult();
+    }
   }
 
 }

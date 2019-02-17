@@ -42,7 +42,7 @@ public class InteractListener implements Listener {
       e.getPlayer().sendMessage(plugin.getLanguageManager().color("Messages.Added-Head")
           .replace("%amount%", String.valueOf(e.getItem().getAmount()))
           .replace("%mob%", EntityDisplayNameFixer.fixDisplayName(head.getEntityType())));
-      e.getPlayer().getInventory().remove(e.getItem());
+      e.getPlayer().setItemInHand(null);
       e.getPlayer().updateInventory();
       return;
     }

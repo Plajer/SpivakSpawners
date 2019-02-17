@@ -6,7 +6,10 @@ import com.gmail.filoghost.holographicdisplays.api.HologramsAPI;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
+import org.bukkit.entity.Ageable;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Slime;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDeathEvent;
@@ -41,8 +44,15 @@ public class EntityListeners implements Listener {
     }
     int merged = e.getEntity().getMetadata("SpivakSpawnersEntitiesMerged").get(0).asInt();
     if (merged - 1 > 0) {
-      Entity en = e.getEntity().getWorld().spawnEntity(e.getEntity().getLocation(), e.getEntityType());
+      LivingEntity en = (LivingEntity) e.getEntity().getWorld().spawnEntity(e.getEntity().getLocation(), e.getEntityType());
       Utils.setNoAI(en);
+
+      if (e.getEntity() instanceof Slime) {
+        ((Slime) en).setSize(2);
+      }
+      if (e.getEntity() instanceof Ageable) {
+        ((Ageable) en).setAdult();
+      }
 
       Hologram hologram = HologramsAPI.createHologram(plugin, e.getEntity().getLocation().add(0,
           EntitiesHologramHeights.valueOf(e.getEntityType().name()).getHeight(), 0));
