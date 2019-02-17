@@ -41,6 +41,8 @@ Menus:
       Bonus-Lore:
         Locked: ";&c&lLOCKED;;&eTo unlock the spawner:;&7Level Needed: &e%level_needed%;&7Money needed: &e%money%$"
         Unlocked: "&a&lUNLOCKED"
+    Cannot-Afford: "&c&l(✘) &cYou don't have enough money to buy this spawner! You need &e%more% more&c!"
+    No-Level: "&c&l(✘) &cYou don't have enough level! Rank up using &e/spawner rankup&c!"
   Spawner-Overview:
     Inventory-Name: "&0Spawner Levels Overview"
     Unlocked-Level:

@@ -4,12 +4,10 @@ import java.util.Arrays;
 
 import org.apache.commons.lang.math.NumberUtils;
 import org.bukkit.Bukkit;
-import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
 
 import pl.plajer.spivakspawners.Main;
 import pl.plajer.spivakspawners.menus.HeadStorageMenu;
@@ -17,8 +15,7 @@ import pl.plajer.spivakspawners.menus.SpawnerShopMenu;
 import pl.plajer.spivakspawners.registry.level.Level;
 import pl.plajer.spivakspawners.registry.spawner.buyable.BuyableSpawner;
 import pl.plajer.spivakspawners.user.User;
-import pl.plajer.spivakspawners.utils.EntityDisplayNameFixer;
-import pl.plajerlair.core.utils.ItemBuilder;
+import pl.plajer.spivakspawners.utils.Utils;
 
 /**
  * @author Plajer
@@ -74,7 +71,7 @@ public class SpawnerCommand implements CommandExecutor {
           return true;
         }
         if (args.length == 2) {
-          giveSpawner((Player) sender, spawner, 1);
+          Utils.giveSpawner((Player) sender, spawner, 1);
           return true;
         }
         if (!NumberUtils.isNumber(args[2])) {
@@ -90,7 +87,7 @@ public class SpawnerCommand implements CommandExecutor {
           }
           target = argTarget;
         }
-        giveSpawner(target, spawner, Integer.valueOf(args[2]));
+        Utils.giveSpawner(target, spawner, Integer.valueOf(args[2]));
         return true;
       case "shop":
         new SpawnerShopMenu((Player) sender);
@@ -132,18 +129,6 @@ public class SpawnerCommand implements CommandExecutor {
         sender.sendMessage(plugin.getLanguageManager().color("Commands.Help-Command.Description"));
         return true;
     }
-  }
-
-  private void giveSpawner(Player player, BuyableSpawner spawner, int amount) {
-    String type = EntityDisplayNameFixer.fixDisplayName(spawner.getType());
-    player.getInventory().addItem(new ItemBuilder(new ItemStack(Material.MOB_SPAWNER, amount))
-        .name(plugin.getLanguageManager().color("Drop-Item.Name")
-            .replace("%mob%", type))
-        .lore(plugin.getLanguageManager().color("Drop-Item.Lore").split(";"))
-        .build());
-    player.sendMessage(plugin.getLanguageManager().color("Commands.Received-Spawner")
-        .replace("%amount%", String.valueOf(1))
-        .replace("%mob%", type));
   }
 
 }

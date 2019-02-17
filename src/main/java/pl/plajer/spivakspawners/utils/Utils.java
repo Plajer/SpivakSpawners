@@ -15,8 +15,14 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftEntity;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.SkullMeta;
+import org.bukkit.plugin.java.JavaPlugin;
+
+import pl.plajer.spivakspawners.Main;
+import pl.plajer.spivakspawners.registry.spawner.buyable.BuyableSpawner;
+import pl.plajerlair.core.utils.ItemBuilder;
 
 /**
  * @author Plajer
@@ -24,6 +30,8 @@ import org.bukkit.inventory.meta.SkullMeta;
  * Created at 13.02.2019
  */
 public class Utils {
+
+  private static Main plugin = JavaPlugin.getPlugin(Main.class);
 
   public static List<Block> getNearbyBlocks(Location location, int radius) {
     List<Block> blocks = new ArrayList<>();
@@ -73,6 +81,18 @@ public class Utils {
 
     head.setItemMeta(headMeta);
     return head;
+  }
+
+  public static void giveSpawner(Player player, BuyableSpawner spawner, int amount) {
+    String type = EntityDisplayNameFixer.fixDisplayName(spawner.getType());
+    player.getInventory().addItem(new ItemBuilder(new ItemStack(Material.MOB_SPAWNER, amount))
+        .name(plugin.getLanguageManager().color("Drop-Item.Name")
+            .replace("%mob%", type))
+        .lore(plugin.getLanguageManager().color("Drop-Item.Lore").split(";"))
+        .build());
+    player.sendMessage(plugin.getLanguageManager().color("Commands.Received-Spawner")
+        .replace("%amount%", String.valueOf(1))
+        .replace("%mob%", type));
   }
 
 }

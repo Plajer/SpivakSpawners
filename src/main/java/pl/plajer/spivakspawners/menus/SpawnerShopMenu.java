@@ -13,6 +13,7 @@ import pl.plajer.spivakspawners.Main;
 import pl.plajer.spivakspawners.registry.spawner.buyable.BuyableSpawner;
 import pl.plajer.spivakspawners.user.User;
 import pl.plajer.spivakspawners.utils.EntityDisplayNameFixer;
+import pl.plajer.spivakspawners.utils.Utils;
 import pl.plajerlair.core.utils.ItemBuilder;
 
 /**
@@ -47,8 +48,19 @@ public class SpawnerShopMenu {
             .split(";")).build();
       }
       pane.addItem(new GuiItem(stack, e -> {
-        //todo
         e.setCancelled(true);
+        if (!buyableSpawner.isUnlocked(user)) {
+          player.sendMessage(plugin.getLanguageManager().color("Menus.Shop-Menu.No-Level"));
+          return;
+        }
+        double balance = plugin.getEconomy().getBalance(player);
+        if (balance < buyableSpawner.getMoneyRequired()) {
+          player.sendMessage(plugin.getLanguageManager().color("Menus.Shop-Menu.Cannot-Afford")
+              .replace("%more%", String.valueOf(buyableSpawner.getMoneyRequired() - balance)));
+          return;
+        }
+        plugin.getEconomy().withdrawPlayer(player, buyableSpawner.getMoneyRequired());
+        Utils.giveSpawner(player, buyableSpawner, 1);
       }), x, y);
       x++;
       if (x == 7) {
