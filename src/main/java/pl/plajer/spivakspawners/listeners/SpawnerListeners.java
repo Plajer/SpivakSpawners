@@ -95,24 +95,34 @@ public class SpawnerListeners implements Listener {
       if (!e.getBlock().getLocation().equals(spawner.getLocation())) {
         continue;
       }
+      /* can be kept for future
       if (!spawner.getOwner().equals(e.getPlayer().getUniqueId())) {
         e.getPlayer().sendMessage(plugin.getLanguageManager().color("Messages.Not-Your-Spawner"));
         e.setCancelled(true);
         return;
-      }
-      plugin.getSpawnersStorage().getSpawnedSpawners().remove(spawner);
-      e.setExpToDrop(0);
-      if (e.getPlayer().getItemInHand().getEnchantments().containsKey(Enchantment.SILK_TOUCH)) {
-        CreatureSpawner creatureSpawner = (CreatureSpawner) e.getBlock().getState();
-        e.getBlock().getWorld().dropItemNaturally(e.getBlock().getLocation(), new ItemBuilder(new ItemStack(e.getBlock().getType(),
-            spawner.getSpawnerData().getSpawnerLevel()))
-            .name(plugin.getLanguageManager().color("Drop-Item.Name").replace("%mob%", EntityDisplayNameFixer.fixDisplayName(creatureSpawner.getSpawnedType())))
-            .lore(plugin.getLanguageManager().color("Drop-Item.Lore").split(";"))
-            .build());
+      }*/
+      boolean fullDestroy = e.getPlayer().isSneaking();
+      boolean hasSilkTouch = e.getPlayer().getItemInHand().getEnchantments().containsKey(Enchantment.SILK_TOUCH);
+      CreatureSpawner creatureSpawner = (CreatureSpawner) e.getBlock().getState();
+      int spawnerLevel = spawner.getSpawnerData().getSpawnerLevel();
+      if (spawnerLevel - 1 > 0 && !fullDestroy) {
+        e.setCancelled(true);
+        spawner.getSpawnerData().setSpawnerLevel(spawnerLevel - 1);
+        if (hasSilkTouch) {
+          dropSpawnerItem(creatureSpawner, 1);
+        } else {
+          e.getPlayer().sendMessage(plugin.getLanguageManager().color("Messages.Only-Silk-Touch"));
+        }
+        return;
+      } else {
+        if (hasSilkTouch) {
+          dropSpawnerItem(creatureSpawner, spawnerLevel);
+        } else {
+          e.getPlayer().sendMessage(plugin.getLanguageManager().color("Messages.Only-Silk-Touch"));
+        }
+        plugin.getSpawnersStorage().getSpawnedSpawners().remove(spawner);
         return;
       }
-      e.getPlayer().sendMessage(plugin.getLanguageManager().color("Messages.Only-Silk-Touch"));
-      return;
     }
   }
 
@@ -233,6 +243,14 @@ public class SpawnerListeners implements Listener {
     if (e.getEntity() instanceof Ageable) {
       ((Ageable) e.getEntity()).setAdult();
     }
+  }
+
+  private void dropSpawnerItem(CreatureSpawner spawner, int amount) {
+    spawner.getLocation().getWorld().dropItemNaturally(spawner.getLocation(), new ItemBuilder(new ItemStack(Material.MOB_SPAWNER,
+        amount))
+        .name(plugin.getLanguageManager().color("Drop-Item.Name").replace("%mob%", EntityDisplayNameFixer.fixDisplayName(spawner.getSpawnedType())))
+        .lore(plugin.getLanguageManager().color("Drop-Item.Lore").split(";"))
+        .build());
   }
 
 }
