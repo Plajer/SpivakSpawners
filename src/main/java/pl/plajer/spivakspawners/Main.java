@@ -52,6 +52,7 @@ public class Main extends JavaPlugin {
 
   @Override
   public void onEnable() {
+    saveDefaultConfig();
     generateFiles();
     setupEconomy();
     this.languageManager = new LanguageManager(this);

@@ -44,6 +44,7 @@ public class InteractListener implements Listener {
           .replace("%mob%", EntityDisplayNameFixer.fixDisplayName(head.getEntityType())));
       e.getPlayer().setItemInHand(null);
       e.getPlayer().updateInventory();
+      e.getPlayer().playSound(e.getPlayer().getLocation(), plugin.getConfig().getString("Heads-Deposit-Sound").toUpperCase(), 1, 1);
       return;
     }
   }

@@ -1,0 +1,17 @@
+#
+#               Plugin: ${project.name}     |       Author: Plajer
+#               Discord: Plajer#7013        | SpigotMC: https://www.spigotmc.org/members/423193/
+#
+#      Plugin Command: /spawners (/spawner, /ss) - Main plugin command
+#      Permissions:
+#       - spivakspawners.give - for '/ss give' command
+#       - spivakspawners.givehead - for '/ss givehead' command
+#
+#      Dependencies: HolographicDisplays, Vault and any plugin that will handle Vault's economy
+
+# Sound when player opens /heads GUI
+# All list of valid sounds for 1.8 http://docs.codelanx.com/Bukkit/1.8/org/bukkit/Sound.html
+Heads-Open-Sound: "LAVA_POP"
+
+# Sound when player deposits heads into the /heads storage
+Heads-Deposit-Sound: "NOTE_BASS_DRUM"

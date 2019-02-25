@@ -45,6 +45,8 @@ public class HeadStorageMenu {
     }
     gui.addPane(pane);
     gui.show(player);
+
+    player.playSound(player.getLocation(), plugin.getConfig().getString("Heads-Open-Sound").toUpperCase(), 1, 1);
   }
 
 }
