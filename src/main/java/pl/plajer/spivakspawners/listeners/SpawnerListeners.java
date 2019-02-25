@@ -158,7 +158,6 @@ public class SpawnerListeners implements Listener {
     CreatureSpawner creatureSpawner = (CreatureSpawner) e.getBlockPlaced().getState();
     creatureSpawner.setCreatureTypeByName(mob);
     Spawner spawner = new Spawner(e.getPlayer().getUniqueId(), e.getBlockPlaced().getLocation(), creatureSpawner.getSpawnedType());
-    e.getBlockPlaced().getWorld().strikeLightningEffect(e.getBlockPlaced().getLocation());
     plugin.getSpawnersStorage().getSpawnedSpawners().add(spawner);
     e.getPlayer().sendMessage(plugin.getLanguageManager().color("Messages.Spawner-Placed")
         .replace("%mob%", EntityDisplayNameFixer.fixDisplayName(spawner.getSpawnerData().getEntityType())));
