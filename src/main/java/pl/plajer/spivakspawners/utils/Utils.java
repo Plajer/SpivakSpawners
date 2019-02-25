@@ -26,6 +26,7 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
 import pl.plajer.spivakspawners.Main;
+import pl.plajer.spivakspawners.registry.heads.Head;
 import pl.plajer.spivakspawners.registry.spawner.buyable.BuyableSpawner;
 import pl.plajerlair.core.utils.ItemBuilder;
 
@@ -110,6 +111,16 @@ public class Utils {
         .lore(plugin.getLanguageManager().color("Drop-Item.Lore").split(";"))
         .build());
     player.sendMessage(plugin.getLanguageManager().color("Commands.Received-Spawner")
+        .replace("%amount%", String.valueOf(1))
+        .replace("%mob%", type));
+  }
+
+  public static void giveHead(Player player, Head head, int amount) {
+    ItemStack stack = head.getItemStack().clone();
+    stack.setAmount(amount);
+    player.getInventory().addItem(stack);
+    String type = EntityDisplayNameFixer.fixDisplayName(head.getEntityType());
+    player.sendMessage(plugin.getLanguageManager().color("Commands.Received-Head")
         .replace("%amount%", String.valueOf(1))
         .replace("%mob%", type));
   }

@@ -6,6 +6,6 @@ depend: [HolographicDisplays, Vault]
 
 commands:
   spawners:
-    aliases: [spawner]
+    aliases: [spawner, ss]
   heads:
     aliases: [head]

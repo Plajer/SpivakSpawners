@@ -12,6 +12,7 @@ import org.bukkit.entity.Player;
 import pl.plajer.spivakspawners.Main;
 import pl.plajer.spivakspawners.menus.HeadStorageMenu;
 import pl.plajer.spivakspawners.menus.SpawnerShopMenu;
+import pl.plajer.spivakspawners.registry.heads.Head;
 import pl.plajer.spivakspawners.registry.level.Level;
 import pl.plajer.spivakspawners.registry.spawner.buyable.BuyableSpawner;
 import pl.plajer.spivakspawners.user.User;
@@ -53,7 +54,8 @@ public class SpawnerCommand implements CommandExecutor {
           return true;
         }
         if (args.length == 1) {
-          sender.sendMessage(plugin.getLanguageManager().color("Commands.Type-Argument").replace("%command%", "/spawner give <spawner type> <amount> (player)"));
+          sender.sendMessage(plugin.getLanguageManager().color("Commands.Type-Argument")
+              .replace("%command%", "/spawner give <spawner type> <amount> (player)"));
           return true;
         }
         String mobType = args[1];
@@ -63,6 +65,7 @@ public class SpawnerCommand implements CommandExecutor {
             continue;
           }
           spawner = buyableSpawner;
+          break;
         }
         if (spawner == null) {
           sender.sendMessage(plugin.getLanguageManager().color("Commands.Invalid-Spawner").replace("%types%",
@@ -75,19 +78,65 @@ public class SpawnerCommand implements CommandExecutor {
           return true;
         }
         if (!NumberUtils.isNumber(args[2])) {
-          sender.sendMessage(plugin.getLanguageManager().color("Commands.Type-Argument").replace("%command%", "/spawner give <spawner type> <valid number> (player)"));
+          sender.sendMessage(plugin.getLanguageManager().color("Commands.Type-Argument")
+              .replace("%command%", "/spawner give <spawner type> <valid number> (player)"));
           return true;
         }
-        Player target = (Player) sender;
+        Player spawnerReceiver = (Player) sender;
         if (args.length == 4) {
           Player argTarget = Bukkit.getPlayer(args[3]);
           if (argTarget == null) {
             sender.sendMessage(plugin.getLanguageManager().color("Commands.Invalid-Player"));
             return true;
           }
-          target = argTarget;
+          spawnerReceiver = argTarget;
         }
-        Utils.giveSpawner(target, spawner, Integer.parseInt(args[2]));
+        Utils.giveSpawner(spawnerReceiver, spawner, Integer.parseInt(args[2]));
+        return true;
+      case "givehead":
+        if (!sender.hasPermission("spivakspawners.givehead")) {
+          sender.sendMessage(plugin.getLanguageManager().color("Commands.No-Permission"));
+          return true;
+        }
+        if (args.length == 1) {
+          sender.sendMessage(plugin.getLanguageManager().color("Commands.Type-Argument")
+              .replace("%command%", "/spawner givehead <head type> <amount> (player)"));
+          return true;
+        }
+        String headType = args[1];
+        Head head = null;
+        for (Head loopHead : plugin.getHeadsRegistry().getHeads()) {
+          if (!loopHead.getEntityType().name().equals(headType.toUpperCase())) {
+            continue;
+          }
+          head = loopHead;
+          break;
+        }
+        if (head == null) {
+          sender.sendMessage(plugin.getLanguageManager().color("Commands.Invalid-Head").replace("%types%",
+              Arrays.toString(plugin.getHeadsRegistry().getHeads().stream()
+                  .map(en -> en.getEntityType().name().toLowerCase()).toArray())));
+          return true;
+        }
+        if (args.length == 2) {
+          Utils.giveHead((Player) sender, head, 1);
+          return true;
+        }
+        if (!NumberUtils.isNumber(args[2])) {
+          sender.sendMessage(plugin.getLanguageManager().color("Commands.Type-Argument")
+              .replace("%command%", "/spawner givehead <head type> <valid number> (player)"));
+          return true;
+        }
+        Player headReceiver = (Player) sender;
+        if (args.length == 4) {
+          Player argTarget = Bukkit.getPlayer(args[3]);
+          if (argTarget == null) {
+            sender.sendMessage(plugin.getLanguageManager().color("Commands.Invalid-Player"));
+            return true;
+          }
+          headReceiver = argTarget;
+        }
+        Utils.giveHead(headReceiver, head, Integer.parseInt(args[2]));
         return true;
       case "shop":
         new SpawnerShopMenu((Player) sender);

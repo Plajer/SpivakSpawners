@@ -10,6 +10,7 @@ Commands:
   No-Permission: "&c&l(✘) &cYou don't have permission for this command!"
   Type-Argument: "&c&l(✘) &cPlease type valid command (%command%) to continue!"
   Invalid-Spawner: "&c&l(✘) &cInvalid spawner type! Valid types: %types%"
+  Invalid-Head: "&c&l(✘) &cInvalid head type! Valid types: %types%"
   Help-Command:
     Header: "&e&lSpivak Spawners Commands"
     Description: " &a/spawners heads (/heads) &7- Shows list of all spawner heads\n
