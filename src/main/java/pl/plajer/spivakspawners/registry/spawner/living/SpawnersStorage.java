@@ -20,7 +20,7 @@ import pl.plajerlair.core.utils.ConfigUtils;
  */
 public class SpawnersStorage {
 
-  private List<SpawnerEntity> spawnerEntities = new ArrayList<>();
+  private List<Entity> spawnerEntities = new ArrayList<>();
   private List<Spawner> spawnedSpawners = new ArrayList<>();
   private Main plugin;
 
@@ -84,18 +84,8 @@ public class SpawnersStorage {
     return spawnedSpawners;
   }
 
-  public List<SpawnerEntity> getSpawnerEntities() {
+  public List<Entity> getSpawnerEntities() {
     return spawnerEntities;
-  }
-
-  @Nullable
-  public SpawnerEntity getSpawnerEntity(Entity en) {
-    for (SpawnerEntity spawnerEntity : spawnerEntities) {
-      if (spawnerEntity.getEntity().equals(en)) {
-        return spawnerEntity;
-      }
-    }
-    return null;
   }
 
 }

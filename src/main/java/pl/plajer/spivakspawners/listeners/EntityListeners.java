@@ -1,8 +1,5 @@
 package pl.plajer.spivakspawners.listeners;
 
-import com.gmail.filoghost.holographicdisplays.api.Hologram;
-import com.gmail.filoghost.holographicdisplays.api.HologramsAPI;
-
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -18,8 +15,6 @@ import org.bukkit.metadata.FixedMetadataValue;
 
 import pl.plajer.spivakspawners.Main;
 import pl.plajer.spivakspawners.registry.spawner.data.SpawnerPerk;
-import pl.plajer.spivakspawners.registry.spawner.living.SpawnerEntity;
-import pl.plajer.spivakspawners.utils.EntitiesHologramHeights;
 import pl.plajer.spivakspawners.utils.EntityDisplayNameFixer;
 import pl.plajer.spivakspawners.utils.Utils;
 
@@ -54,13 +49,11 @@ public class EntityListeners implements Listener {
         ((Ageable) en).setAdult();
       }
 
-      Hologram hologram = HologramsAPI.createHologram(plugin, e.getEntity().getLocation().add(0,
-          EntitiesHologramHeights.valueOf(e.getEntityType().name()).getHeight(), 0));
-      hologram.appendTextLine(plugin.getLanguageManager().color("Merged.Entity-Name")
+      en.setCustomName(plugin.getLanguageManager().color("Merged.Entity-Name")
           .replace("%mob%", EntityDisplayNameFixer.fixDisplayName(e.getEntityType()))
           .replace("%number%", String.valueOf(merged - 1)));
-      SpawnerEntity spawnerEntity = new SpawnerEntity(hologram, en);
-      plugin.getSpawnersStorage().getSpawnerEntities().add(spawnerEntity);
+      en.setCustomNameVisible(true);
+      plugin.getSpawnersStorage().getSpawnerEntities().add(en);
 
       //pass all metadata values to the new entity
       en.setMetadata("SpivakSpawnersEntity", new FixedMetadataValue(plugin, true));
@@ -73,9 +66,7 @@ public class EntityListeners implements Listener {
       }
     }
     applyDeathLoot(e);
-    SpawnerEntity spawnerEntity = plugin.getSpawnersStorage().getSpawnerEntity(e.getEntity());
-    spawnerEntity.getHologram().delete();
-    plugin.getSpawnersStorage().getSpawnerEntities().remove(spawnerEntity);
+    plugin.getSpawnersStorage().getSpawnerEntities().remove(e.getEntity());
   }
 
   private void applyDeathLoot(EntityDeathEvent e) {

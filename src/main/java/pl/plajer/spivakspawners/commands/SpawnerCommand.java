@@ -17,6 +17,7 @@ import pl.plajer.spivakspawners.registry.level.Level;
 import pl.plajer.spivakspawners.registry.spawner.buyable.BuyableSpawner;
 import pl.plajer.spivakspawners.user.User;
 import pl.plajer.spivakspawners.utils.Utils;
+import pl.plajerlair.core.utils.ConfigUtils;
 
 /**
  * @author Plajer
@@ -172,6 +173,14 @@ public class SpawnerCommand implements CommandExecutor {
         user.getOwnedHeads().put(nextLevel.getHead(), user.getOwnedHeads(nextLevel.getHead()) - nextLevel.getHeadsNeeded());
         sender.sendMessage(plugin.getLanguageManager().color("Commands.Rank-Up.Success")
             .replace("%level%", String.valueOf(nextLevelNumber)));
+        return true;
+      case "reload":
+        if (!sender.hasPermission("spivakspawners.reload")) {
+          sender.sendMessage(plugin.getLanguageManager().color("Commands.No-Permission"));
+          return true;
+        }
+        plugin.reloadConfig();
+        plugin.getLanguageManager().setConfig(ConfigUtils.getConfig(plugin, "language"));
         return true;
       default:
         sender.sendMessage(plugin.getLanguageManager().color("Commands.Help-Command.Header"));

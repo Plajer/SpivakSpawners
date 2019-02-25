@@ -30,10 +30,6 @@ public class User {
     this.level = level;
   }
 
-  public void addLevel(int level) {
-    this.level += level;
-  }
-
   public Player getPlayer() {
     return player;
   }

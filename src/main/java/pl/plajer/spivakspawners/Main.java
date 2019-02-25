@@ -1,11 +1,5 @@
 package pl.plajer.spivakspawners;
 
-import com.gmail.filoghost.holographicdisplays.api.Hologram;
-import com.gmail.filoghost.holographicdisplays.api.HologramsAPI;
-
-import java.util.ArrayList;
-import java.util.List;
-
 import net.milkbowl.vault.economy.Economy;
 
 import org.bukkit.Bukkit;
@@ -27,11 +21,9 @@ import pl.plajer.spivakspawners.registry.heads.HeadsRegistry;
 import pl.plajer.spivakspawners.registry.level.LevelsRegistry;
 import pl.plajer.spivakspawners.registry.spawner.buyable.BuyableSpawnersRegistry;
 import pl.plajer.spivakspawners.registry.spawner.living.Spawner;
-import pl.plajer.spivakspawners.registry.spawner.living.SpawnerEntity;
 import pl.plajer.spivakspawners.registry.spawner.living.SpawnersStorage;
 import pl.plajer.spivakspawners.user.User;
 import pl.plajer.spivakspawners.user.UserManager;
-import pl.plajer.spivakspawners.utils.EntitiesHologramHeights;
 import pl.plajerlair.core.utils.ConfigUtils;
 
 /**
@@ -67,7 +59,6 @@ public class Main extends JavaPlugin {
     new EntityListeners(this);
     new InteractListener(this);
     new FixesListeners(this);
-    hologramUpdateTask();
     new SpawnerCommand(this);
     new HeadsCommand(this);
   }
@@ -87,9 +78,6 @@ public class Main extends JavaPlugin {
         }
       }
     }
-    for (Hologram hologram : HologramsAPI.getHolograms(this)) {
-      hologram.delete();
-    }
   }
 
   private void generateFiles() {
@@ -99,38 +87,16 @@ public class Main extends JavaPlugin {
     }
   }
 
-  private void hologramUpdateTask() {
-    Bukkit.getScheduler().runTaskTimer(this, () -> {
-      List<SpawnerEntity> removable = new ArrayList<>();
-      for (SpawnerEntity spawnerEntity : spawnersStorage.getSpawnerEntities()) {
-        if (spawnerEntity.getEntity() == null || spawnerEntity.getEntity().isDead()) {
-          removable.add(spawnerEntity);
-          continue;
-        }
-        if (spawnerEntity.getHologram().getLocation().equals(spawnerEntity.getEntity().getLocation()
-            .add(0, EntitiesHologramHeights.valueOf(spawnerEntity.getEntity().getType().name()).getHeight(), 0))) {
-          continue;
-        }
-        spawnerEntity.getHologram().teleport(spawnerEntity.getEntity().getLocation().add(0,
-            EntitiesHologramHeights.valueOf(spawnerEntity.getEntity().getType().name()).getHeight(), 0));
-      }
-      for (SpawnerEntity entity : removable) {
-        entity.getHologram().delete();
-        spawnersStorage.getSpawnerEntities().remove(entity);
-      }
-    }, 20, 20);
-  }
 
-  private boolean setupEconomy() {
+  private void setupEconomy() {
     if (getServer().getPluginManager().getPlugin("Vault") == null) {
-      return false;
+      return;
     }
     RegisteredServiceProvider<Economy> rsp = getServer().getServicesManager().getRegistration(Economy.class);
     if (rsp == null) {
-      return false;
+      return;
     }
     economy = rsp.getProvider();
-    return economy != null;
   }
 
   public Economy getEconomy() {

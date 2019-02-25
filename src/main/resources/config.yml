@@ -6,8 +6,9 @@
 #      Permissions:
 #       - spivakspawners.give - for '/ss give' command
 #       - spivakspawners.givehead - for '/ss givehead' command
+#       - spivakspawners.reload - for '/ss reload' command
 #
-#      Dependencies: HolographicDisplays, Vault and any plugin that will handle Vault's economy
+#      Dependencies: Vault and any plugin that will handle Vault's economy
 
 # Sound when player opens /heads GUI
 # All list of valid sounds for 1.8 http://docs.codelanx.com/Bukkit/1.8/org/bukkit/Sound.html

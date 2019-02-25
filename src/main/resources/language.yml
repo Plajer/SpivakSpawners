@@ -17,7 +17,8 @@ Commands:
     &a/spawners give <type> <amount> (player) &7- Gives spawners\n
     &a/spawners givehead <type> <amount> (player) &7- Gives heads\n
     &a/spawners shop &7- Opens shop with spawners\n
-    &a/spawners rankup &7- Rank-up to buy new spawners"
+    &a/spawners rankup &7- Rank-up to buy new spawners\n
+    &a/spawners reload &7- Reloads configuration files"
   Received-Spawner: "&a&l(✔) &aYou received &e&l%amount%x %mob% Spawner(s)&a!"
   Received-Head: "&a&l(✔) &aYou received &e&l%amount%x %mob% Head(s)&a!"
   Invalid-Player: "&c&l(✘) &cThat player doesn't exist!"

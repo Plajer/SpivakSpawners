@@ -1,8 +1,5 @@
 package pl.plajer.spivakspawners.listeners;
 
-import com.gmail.filoghost.holographicdisplays.api.Hologram;
-import com.gmail.filoghost.holographicdisplays.api.HologramsAPI;
-
 import java.util.Arrays;
 
 import net.minecraft.server.v1_8_R3.BlockPosition;
@@ -36,8 +33,6 @@ import pl.plajer.spivakspawners.menus.SpawnerUpgradeMenu;
 import pl.plajer.spivakspawners.registry.spawner.data.SpawnerData;
 import pl.plajer.spivakspawners.registry.spawner.data.SpawnerPerk;
 import pl.plajer.spivakspawners.registry.spawner.living.Spawner;
-import pl.plajer.spivakspawners.registry.spawner.living.SpawnerEntity;
-import pl.plajer.spivakspawners.utils.EntitiesHologramHeights;
 import pl.plajer.spivakspawners.utils.EntityDisplayNameFixer;
 import pl.plajer.spivakspawners.utils.Utils;
 import pl.plajerlair.core.utils.ItemBuilder;
@@ -216,11 +211,9 @@ public class SpawnerListeners implements Listener {
 
     Utils.setNoAI((LivingEntity) e.getEntity());
     Entity mergeableWith = plugin.getMergeHandler().getNearbyMergeable(e.getEntity());
-    SpawnerEntity spawnerEntity = plugin.getSpawnersStorage().getSpawnerEntity(mergeableWith);
-    if (mergeableWith != null && spawnerEntity != null) {
+    if (mergeableWith != null) {
       int mergedEntities = mergeableWith.getMetadata("SpivakSpawnersEntitiesMerged").get(0).asInt();
-      spawnerEntity.getHologram().clearLines();
-      spawnerEntity.getHologram().appendTextLine(plugin.getLanguageManager().color("Merged.Entity-Name")
+      mergeableWith.setCustomName(plugin.getLanguageManager().color("Merged.Entity-Name")
           .replace("%mob%", EntityDisplayNameFixer.fixDisplayName(mergeableWith.getType()))
           .replace("%number%", String.valueOf(mergedEntities + 1)));
       mergeableWith.setMetadata("SpivakSpawnersEntitiesMerged", new FixedMetadataValue(plugin, mergedEntities + 1));
@@ -233,9 +226,7 @@ public class SpawnerListeners implements Listener {
       e.getEntity().setMetadata(perk.getMetadataAccessor(), new FixedMetadataValue(plugin, true));
     }
     e.getEntity().setCustomNameVisible(true);
-    Hologram hologram = HologramsAPI.createHologram(plugin, e.getEntity().getLocation().add(0,
-        EntitiesHologramHeights.valueOf(e.getEntityType().name()).getHeight(), 0));
-    plugin.getSpawnersStorage().getSpawnerEntities().add(new SpawnerEntity(hologram, e.getEntity()));
+    plugin.getSpawnersStorage().getSpawnerEntities().add(e.getEntity());
 
     if (e.getEntity() instanceof Slime) {
       ((Slime) e.getEntity()).setSize(2);

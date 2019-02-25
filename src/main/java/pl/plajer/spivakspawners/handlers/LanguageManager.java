@@ -23,6 +23,10 @@ public class LanguageManager {
     return config;
   }
 
+  public void setConfig(FileConfiguration config) {
+    this.config = config;
+  }
+
   public String color(String accessor) {
     return ChatColor.translateAlternateColorCodes('&', config.getString(accessor));
   }
