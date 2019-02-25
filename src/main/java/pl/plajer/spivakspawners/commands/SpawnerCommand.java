@@ -181,6 +181,7 @@ public class SpawnerCommand implements CommandExecutor {
         }
         plugin.reloadConfig();
         plugin.getLanguageManager().setConfig(ConfigUtils.getConfig(plugin, "language"));
+        sender.sendMessage(plugin.getLanguageManager().color("Commands.Reloaded-Configs"));
         return true;
       default:
         sender.sendMessage(plugin.getLanguageManager().color("Commands.Help-Command.Header"));
