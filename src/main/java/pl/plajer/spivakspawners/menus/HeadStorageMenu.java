@@ -4,6 +4,7 @@ import com.github.stefvanschie.inventoryframework.Gui;
 import com.github.stefvanschie.inventoryframework.GuiItem;
 import com.github.stefvanschie.inventoryframework.pane.StaticPane;
 
+import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -46,7 +47,7 @@ public class HeadStorageMenu {
     gui.addPane(pane);
     gui.show(player);
 
-    player.playSound(player.getLocation(), plugin.getConfig().getString("Heads-Open-Sound").toUpperCase(), 1, 1);
+    player.playSound(player.getLocation(), Sound.valueOf(plugin.getConfig().getString("Heads-Open-Sound").toUpperCase()), 1, 1);
   }
 
 }

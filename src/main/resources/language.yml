@@ -15,9 +15,11 @@ Commands:
     Header: "&e&lSpivak Spawners Commands"
     Description: " &a/spawners heads (/heads) &7- Shows list of all spawner heads\n
     &a/spawners give <type> <amount> (player) &7- Gives spawners\n
+    &a/spawners givehead <type> <amount> (player) &7- Gives heads\n
     &a/spawners shop &7- Opens shop with spawners\n
     &a/spawners rankup &7- Rank-up to buy new spawners"
   Received-Spawner: "&a&l(✔) &aYou received &e&l%amount%x %mob% Spawner(s)&a!"
+  Received-Head: "&a&l(✔) &aYou received &e&l%amount%x %mob% Head(s)&a!"
   Invalid-Player: "&c&l(✘) &cThat player doesn't exist!"
   Rank-Up:
     Max-Level: "&6&l(✘) &6You're already on maximum level!"

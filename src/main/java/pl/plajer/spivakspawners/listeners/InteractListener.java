@@ -1,5 +1,6 @@
 package pl.plajer.spivakspawners.listeners;
 
+import org.bukkit.Sound;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -44,7 +45,7 @@ public class InteractListener implements Listener {
           .replace("%mob%", EntityDisplayNameFixer.fixDisplayName(head.getEntityType())));
       e.getPlayer().setItemInHand(null);
       e.getPlayer().updateInventory();
-      e.getPlayer().playSound(e.getPlayer().getLocation(), plugin.getConfig().getString("Heads-Deposit-Sound").toUpperCase(), 1, 1);
+      e.getPlayer().playSound(e.getPlayer().getLocation(), Sound.valueOf(plugin.getConfig().getString("Heads-Deposit-Sound").toUpperCase()), 1, 1);
       return;
     }
   }
