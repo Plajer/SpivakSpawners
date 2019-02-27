@@ -4,6 +4,7 @@ Messages:
   Spawner-Merged: "&e&lMerged %mob% Spawner!"
   Not-Your-Spawner: "&c&l(✘) &cYou cannot break spawner you don't own!"
   Only-Silk-Touch: "&c&l(✘) &cYou can drop spawners only with silk touch enchantment!"
+  Spawner-Maxed: "&e&lSpawner has been Maxed!"
 
 Commands:
   Only-Player: "&cCommand executable by players only!"
@@ -73,6 +74,8 @@ Drop-Item:
   # Please edit only colors, otherwise it won't work properly :(
   Name: "&e&l%mob% Spawner"
   Lore: "&7Place to combine with other spawners;&7or to spawn entities!"
+  # Lore added to the item to describe its level (merge level)
+  Level-Lore: "&eMerge Level: %level%"
 
 Drop-Head:
   Name: "&e&l%mob% Head"

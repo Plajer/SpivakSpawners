@@ -1,7 +1,5 @@
 package pl.plajer.spivakspawners.listeners;
 
-import java.util.Arrays;
-
 import net.minecraft.server.v1_8_R3.BlockPosition;
 import net.minecraft.server.v1_8_R3.NBTTagCompound;
 import net.minecraft.server.v1_8_R3.TileEntityMobSpawner;
@@ -129,9 +127,15 @@ public class SpawnerListeners implements Listener {
     if (!e.getItemInHand().hasItemMeta() || !e.getItemInHand().getItemMeta().hasDisplayName() || !e.getItemInHand().getItemMeta().hasLore()) {
       return;
     }
-    if (!e.getItemInHand().getItemMeta().getLore().equals(Arrays.asList(plugin.getLanguageManager().color("Drop-Item.Lore").split(";")))) {
-      return;
+
+    int handSpawnerLevel = 1;
+    for (String lore : e.getItemInHand().getItemMeta().getLore()) {
+      if (!lore.matches(plugin.getLanguageManager().color("Drop-Item.Level-Lore").replace("%level%", ".*?"))) {
+        continue;
+      }
+      handSpawnerLevel = Integer.parseInt(lore.replaceAll("[^0-9]", ""));
     }
+
     String mob = ChatColor.stripColor(e.getPlayer().getItemInHand().getItemMeta().getDisplayName());
     mob = EntityDisplayNameFixer.fromFixedDisplayName(mob.replace(" Spawner", ""));
     for (Block block : Utils.getNearbyBlocks(e.getBlockPlaced().getLocation(), 3)) {
@@ -146,15 +150,22 @@ public class SpawnerListeners implements Listener {
       if (spawner == null || spawner.getSpawnerData().getSpawnerLevel() == SpawnerData.MAX_UPGRADE_LEVEL) {
         continue;
       }
+      if (spawner.getSpawnerData().getSpawnerLevel() + handSpawnerLevel > SpawnerData.MAX_UPGRADE_LEVEL) {
+        continue;
+      }
       e.setCancelled(true);
       if (e.getItemInHand().getAmount() > 1) {
         e.getItemInHand().setAmount(e.getItemInHand().getAmount() - 1);
       } else {
         e.getPlayer().getInventory().remove(e.getItemInHand());
       }
-      spawner.getSpawnerData().setSpawnerLevel(spawner.getSpawnerData().getSpawnerLevel() + 1);
+      spawner.getSpawnerData().setSpawnerLevel(spawner.getSpawnerData().getSpawnerLevel() + handSpawnerLevel);
       if (spawner.shouldApplyPerk()) {
         spawner.addPerk(SpawnerPerk.values()[(spawner.getSpawnerData().getSpawnerLevel() / 4) - 1]);
+      }
+      if (spawner.getSpawnerData().getSpawnerLevel() == SpawnerData.MAX_UPGRADE_LEVEL) {
+        e.getPlayer().sendMessage(plugin.getLanguageManager().color("Messages.Spawner-Maxed"));
+        return;
       }
       e.getPlayer().sendMessage(plugin.getLanguageManager().color("Messages.Spawner-Merged")
           .replace("%mob%", EntityDisplayNameFixer.fixDisplayName(spawner.getSpawnerData().getEntityType())));
@@ -163,6 +174,7 @@ public class SpawnerListeners implements Listener {
     CreatureSpawner creatureSpawner = (CreatureSpawner) e.getBlockPlaced().getState();
     creatureSpawner.setCreatureTypeByName(mob);
     Spawner spawner = new Spawner(e.getPlayer().getUniqueId(), e.getBlockPlaced().getLocation(), creatureSpawner.getSpawnedType());
+    spawner.getSpawnerData().setSpawnerLevel(handSpawnerLevel);
     plugin.getSpawnersStorage().getSpawnedSpawners().add(spawner);
     e.getPlayer().sendMessage(plugin.getLanguageManager().color("Messages.Spawner-Placed")
         .replace("%mob%", EntityDisplayNameFixer.fixDisplayName(spawner.getSpawnerData().getEntityType())));
@@ -237,10 +249,15 @@ public class SpawnerListeners implements Listener {
   }
 
   private void dropSpawnerItem(CreatureSpawner spawner, int amount) {
-    spawner.getLocation().getWorld().dropItemNaturally(spawner.getLocation(), new ItemBuilder(new ItemStack(Material.MOB_SPAWNER,
-        amount))
-        .name(plugin.getLanguageManager().color("Drop-Item.Name").replace("%mob%", EntityDisplayNameFixer.fixDisplayName(spawner.getSpawnedType())))
-        .lore(plugin.getLanguageManager().color("Drop-Item.Lore").split(";"))
+    String type = EntityDisplayNameFixer.fixDisplayName(spawner.getSpawnedType());
+    spawner.getLocation().getWorld().dropItemNaturally(spawner.getLocation(), new ItemBuilder(new ItemStack(Material.MOB_SPAWNER))
+        .name(plugin.getLanguageManager().color("Drop-Item.Name").replace("%mob%", type))
+        .lore(plugin.getLanguageManager().color("Drop-Item.Lore")
+            .replace("%mob%", type)
+            .split(";"))
+        .lore(plugin.getLanguageManager().color("Drop-Item.Level-Lore")
+            .replace("%level%", String.valueOf(amount))
+            .split(";"))
         .build());
   }
 

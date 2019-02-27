@@ -59,7 +59,6 @@ public class Utils {
   public static void setNoAI(LivingEntity bukkitEntity) {
     ((CraftLivingEntity) bukkitEntity).getHandle().getAttributeInstance(GenericAttributes.MOVEMENT_SPEED).setValue(0);
     ((CraftLivingEntity) bukkitEntity).getHandle().getAttributeInstance(GenericAttributes.FOLLOW_RANGE).setValue(0);
-    ((CraftLivingEntity) bukkitEntity).getHandle().getAttributeInstance(GenericAttributes.c).setValue(1.0);
     try {
       ((CraftLivingEntity) bukkitEntity).getHandle().getAttributeInstance(GenericAttributes.ATTACK_DAMAGE).setValue(0);
     } catch (Exception ignored) {
@@ -108,7 +107,12 @@ public class Utils {
     player.getInventory().addItem(new ItemBuilder(new ItemStack(Material.MOB_SPAWNER, amount))
         .name(plugin.getLanguageManager().color("Drop-Item.Name")
             .replace("%mob%", type))
-        .lore(plugin.getLanguageManager().color("Drop-Item.Lore").split(";"))
+        .lore(plugin.getLanguageManager().color("Drop-Item.Lore")
+            .replace("%mob%", type)
+            .split(";"))
+        .lore(plugin.getLanguageManager().color("Drop-Item.Level-Lore")
+            .replace("%level%", "1")
+            .split(";"))
         .build());
     player.sendMessage(plugin.getLanguageManager().color("Commands.Received-Spawner")
         .replace("%amount%", String.valueOf(1))
