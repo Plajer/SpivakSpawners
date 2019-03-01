@@ -101,6 +101,10 @@ public class SpawnerListeners implements Listener {
     if (e.getBlock().getType() != Material.MOB_SPAWNER) {
       return;
     }
+    if (!e.getPlayer().hasPermission("spivakspawners.spawner.break")) {
+      e.getPlayer().sendMessage(plugin.getLanguageManager().color("Messages.No-Permission"));
+      return;
+    }
     for (Spawner spawner : plugin.getSpawnersStorage().getSpawnedSpawners()) {
       if (!e.getBlock().getLocation().equals(spawner.getLocation())) {
         continue;
@@ -142,6 +146,10 @@ public class SpawnerListeners implements Listener {
       return;
     }
     if (!e.getItemInHand().hasItemMeta() || !e.getItemInHand().getItemMeta().hasDisplayName() || !e.getItemInHand().getItemMeta().hasLore()) {
+      return;
+    }
+    if (!e.getPlayer().hasPermission("spivakspawners.spawner.place")) {
+      e.getPlayer().sendMessage(plugin.getLanguageManager().color("Messages.No-Permission"));
       return;
     }
 

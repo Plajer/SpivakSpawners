@@ -2,9 +2,9 @@ Messages:
   Added-Head: "&a&l+ %amount% %mob% Head added to storage!"
   Spawner-Placed: "&e&lPlaced %mob% Spawner!"
   Spawner-Merged: "&e&lMerged %mob% Spawner!"
-  Not-Your-Spawner: "&c&l(✘) &cYou cannot break spawner you don't own!"
   Only-Silk-Touch: "&c&l(✘) &cYou can drop spawners only with silk touch enchantment!"
   Spawner-Maxed: "&e&lSpawner has been Maxed!"
+  No-Permission: "&c&l(✘) &cYou don't have permission for this action!"
 
 Commands:
   Only-Player: "&cCommand executable by players only!"
