@@ -117,7 +117,8 @@ public class SpawnerListeners implements Listener {
       }*/
       e.setExpToDrop(0);
       boolean fullDestroy = e.getPlayer().isSneaking();
-      boolean hasSilkTouch = e.getPlayer().getItemInHand().getEnchantments().containsKey(Enchantment.SILK_TOUCH);
+      boolean hasSilkTouch = e.getPlayer().getItemInHand().getEnchantments().containsKey(Enchantment.SILK_TOUCH) &&
+          e.getPlayer().hasPermission("spivakspawners.silkdrop");
       CreatureSpawner creatureSpawner = (CreatureSpawner) e.getBlock().getState();
       int spawnerLevel = spawner.getSpawnerData().getSpawnerLevel();
       if (spawnerLevel - 1 > 0 && !fullDestroy) {
