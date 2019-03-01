@@ -41,6 +41,7 @@ public class Main extends JavaPlugin {
   private SpawnersStorage spawnersStorage;
   private UserManager userManager;
   private MergeHandler mergeHandler;
+  private SpawnerListeners spawnerListeners;
 
   @Override
   public void onEnable() {
@@ -55,7 +56,7 @@ public class Main extends JavaPlugin {
     userManager = new UserManager(this);
     mergeHandler = new MergeHandler();
     new JoinQuitListeners(this);
-    new SpawnerListeners(this);
+    spawnerListeners = new SpawnerListeners(this);
     new EntityListeners(this);
     new InteractListener(this);
     new FixesListeners(this);
@@ -125,6 +126,10 @@ public class Main extends JavaPlugin {
 
   public SpawnersStorage getSpawnersStorage() {
     return spawnersStorage;
+  }
+
+  public SpawnerListeners getSpawnerListeners() {
+    return spawnerListeners;
   }
 
   public UserManager getUserManager() {

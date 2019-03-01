@@ -14,6 +14,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.FixedMetadataValue;
 
 import pl.plajer.spivakspawners.Main;
+import pl.plajer.spivakspawners.registry.spawner.data.CustomDrop;
 import pl.plajer.spivakspawners.registry.spawner.data.SpawnerPerk;
 import pl.plajer.spivakspawners.utils.EntityDisplayNameFixer;
 import pl.plajer.spivakspawners.utils.Utils;
@@ -118,6 +119,11 @@ public class EntityListeners implements Listener {
         case DOUBLE_XP:
           e.setDroppedExp(e.getDroppedExp() * 2);
           break;
+      }
+    }
+    for (CustomDrop drop : plugin.getSpawnerListeners().getCustomDrops().get(en.getType())) {
+      if (drop.getChance() <= rand.nextInt(0, 100)) {
+        e.getDrops().add(drop.getDrop());
       }
     }
   }

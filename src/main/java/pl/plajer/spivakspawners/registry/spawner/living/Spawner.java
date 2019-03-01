@@ -14,6 +14,7 @@ import java.util.UUID;
 import org.bukkit.Location;
 import org.bukkit.entity.EntityType;
 
+import pl.plajer.spivakspawners.registry.spawner.data.CustomDrop;
 import pl.plajer.spivakspawners.registry.spawner.data.SpawnerData;
 import pl.plajer.spivakspawners.registry.spawner.data.SpawnerPerk;
 
@@ -34,11 +35,11 @@ public class Spawner implements Serializable {
   private List<SpawnerPerk> perks = new ArrayList<>();
   private SpawnerData spawnerData;
 
-  public Spawner(UUID owner, Location location, EntityType type) {
+  public Spawner(UUID owner, Location location, EntityType type, List<CustomDrop> customDrops) {
     this.owner = owner;
     this.location = location;
     this.spawnerLocation = new SpawnerLocation(location.getWorld().getName(), location.getBlockX(), location.getBlockY(), location.getBlockZ());
-    this.spawnerData = new SpawnerData(1, type);
+    this.spawnerData = new SpawnerData(1, type, customDrops);
   }
 
   /**

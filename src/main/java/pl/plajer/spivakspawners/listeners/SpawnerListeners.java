@@ -1,5 +1,10 @@
 package pl.plajer.spivakspawners.listeners;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
 import net.minecraft.server.v1_8_R3.BlockPosition;
 import net.minecraft.server.v1_8_R3.NBTTagCompound;
 import net.minecraft.server.v1_8_R3.TileEntityMobSpawner;
@@ -9,10 +14,12 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.CreatureSpawner;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.craftbukkit.v1_8_R3.CraftWorld;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Ageable;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Slime;
 import org.bukkit.event.EventHandler;
@@ -28,11 +35,13 @@ import org.bukkit.metadata.FixedMetadataValue;
 
 import pl.plajer.spivakspawners.Main;
 import pl.plajer.spivakspawners.menus.SpawnerUpgradeMenu;
+import pl.plajer.spivakspawners.registry.spawner.data.CustomDrop;
 import pl.plajer.spivakspawners.registry.spawner.data.SpawnerData;
 import pl.plajer.spivakspawners.registry.spawner.data.SpawnerPerk;
 import pl.plajer.spivakspawners.registry.spawner.living.Spawner;
 import pl.plajer.spivakspawners.utils.EntityDisplayNameFixer;
 import pl.plajer.spivakspawners.utils.Utils;
+import pl.plajerlair.core.utils.ConfigUtils;
 import pl.plajerlair.core.utils.ItemBuilder;
 
 /**
@@ -42,11 +51,19 @@ import pl.plajerlair.core.utils.ItemBuilder;
  */
 public class SpawnerListeners implements Listener {
 
+  private Map<EntityType, List<CustomDrop>> customDrops = new HashMap<>();
   private Main plugin;
 
   public SpawnerListeners(Main plugin) {
     this.plugin = plugin;
     plugin.getServer().getPluginManager().registerEvents(this, plugin);
+    FileConfiguration config = ConfigUtils.getConfig(plugin, "spawners");
+    for (String key : config.getConfigurationSection("Spawners").getKeys(false)) {
+      customDrops.put(EntityType.valueOf(config.getString("Spawners." + key + ".Type").toUpperCase()),
+          config.getStringList("Spawners." + key + ".Custom-Drops").stream()
+              .map(drop -> new CustomDrop(new ItemStack(Material.matchMaterial(drop.split(":")[0])),
+                  Double.parseDouble(drop.split(":")[1]))).collect(Collectors.toList()));
+    }
   }
 
   @EventHandler
@@ -173,7 +190,8 @@ public class SpawnerListeners implements Listener {
     }
     CreatureSpawner creatureSpawner = (CreatureSpawner) e.getBlockPlaced().getState();
     creatureSpawner.setCreatureTypeByName(mob);
-    Spawner spawner = new Spawner(e.getPlayer().getUniqueId(), e.getBlockPlaced().getLocation(), creatureSpawner.getSpawnedType());
+    Spawner spawner = new Spawner(e.getPlayer().getUniqueId(), e.getBlockPlaced().getLocation(), creatureSpawner.getSpawnedType(),
+        customDrops.get(creatureSpawner.getSpawnedType()));
     spawner.getSpawnerData().setSpawnerLevel(handSpawnerLevel);
     plugin.getSpawnersStorage().getSpawnedSpawners().add(spawner);
     e.getPlayer().sendMessage(plugin.getLanguageManager().color("Messages.Spawner-Placed")
@@ -261,4 +279,7 @@ public class SpawnerListeners implements Listener {
         .build());
   }
 
+  public Map<EntityType, List<CustomDrop>> getCustomDrops() {
+    return customDrops;
+  }
 }
