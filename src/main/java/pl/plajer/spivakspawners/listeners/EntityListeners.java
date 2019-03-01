@@ -38,32 +38,34 @@ public class EntityListeners implements Listener {
     if (!e.getEntity().hasMetadata("SpivakSpawnersEntity")) {
       return;
     }
-    int merged = e.getEntity().getMetadata("SpivakSpawnersEntitiesMerged").get(0).asInt();
-    if (merged - 1 > 0) {
-      LivingEntity en = (LivingEntity) e.getEntity().getWorld().spawnEntity(e.getEntity().getLocation(), e.getEntityType());
-      Utils.setNoAI(en);
+    if (plugin.getConfig().getBoolean("Mob-Merge-Enabled")) {
+      int merged = e.getEntity().getMetadata("SpivakSpawnersEntitiesMerged").get(0).asInt();
+      if (merged - 1 > 0) {
+        LivingEntity en = (LivingEntity) e.getEntity().getWorld().spawnEntity(e.getEntity().getLocation(), e.getEntityType());
+        Utils.setNoAI(en);
 
-      if (e.getEntity() instanceof Slime) {
-        ((Slime) en).setSize(2);
-      }
-      if (e.getEntity() instanceof Ageable) {
-        ((Ageable) en).setAdult();
-      }
-
-      en.setCustomName(plugin.getLanguageManager().color("Merged.Entity-Name")
-          .replace("%mob%", EntityDisplayNameFixer.fixDisplayName(e.getEntityType()))
-          .replace("%number%", String.valueOf(merged - 1)));
-      en.setCustomNameVisible(true);
-      plugin.getSpawnersStorage().getSpawnerEntities().add(en);
-
-      //pass all metadata values to the new entity
-      en.setMetadata("SpivakSpawnersEntity", new FixedMetadataValue(plugin, true));
-      en.setMetadata("SpivakSpawnersEntitiesMerged", new FixedMetadataValue(plugin, merged - 1));
-      for (SpawnerPerk perk : SpawnerPerk.values()) {
-        if (!e.getEntity().hasMetadata(perk.getMetadataAccessor())) {
-          continue;
+        if (e.getEntity() instanceof Slime) {
+          ((Slime) en).setSize(2);
         }
-        en.setMetadata(perk.getMetadataAccessor(), new FixedMetadataValue(plugin, true));
+        if (e.getEntity() instanceof Ageable) {
+          ((Ageable) en).setAdult();
+        }
+
+        en.setCustomName(plugin.getLanguageManager().color("Merged.Entity-Name")
+            .replace("%mob%", EntityDisplayNameFixer.fixDisplayName(e.getEntityType()))
+            .replace("%number%", String.valueOf(merged - 1)));
+        en.setCustomNameVisible(true);
+        plugin.getSpawnersStorage().getSpawnerEntities().add(en);
+
+        //pass all metadata values to the new entity
+        en.setMetadata("SpivakSpawnersEntity", new FixedMetadataValue(plugin, true));
+        en.setMetadata("SpivakSpawnersEntitiesMerged", new FixedMetadataValue(plugin, merged - 1));
+        for (SpawnerPerk perk : SpawnerPerk.values()) {
+          if (!e.getEntity().hasMetadata(perk.getMetadataAccessor())) {
+            continue;
+          }
+          en.setMetadata(perk.getMetadataAccessor(), new FixedMetadataValue(plugin, true));
+        }
       }
     }
     applyDeathLoot(e);

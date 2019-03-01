@@ -16,3 +16,6 @@ Heads-Open-Sound: "LAVA_POP"
 
 # Sound when player deposits heads into the /heads storage
 Heads-Deposit-Sound: "NOTE_BASS_DRUM"
+
+# Should we enable mobs merging feature?
+Mob-Merge-Enabled: true

@@ -249,18 +249,20 @@ public class SpawnerListeners implements Listener {
     tileSpawner.getSpawner().a(tag);
 
     Utils.setNoAI((LivingEntity) e.getEntity());
-    Entity mergeableWith = plugin.getMergeHandler().getNearbyMergeable(e.getEntity());
-    if (mergeableWith != null) {
-      int mergedEntities = mergeableWith.getMetadata("SpivakSpawnersEntitiesMerged").get(0).asInt();
-      mergeableWith.setCustomName(plugin.getLanguageManager().color("Merged.Entity-Name")
-          .replace("%mob%", EntityDisplayNameFixer.fixDisplayName(mergeableWith.getType()))
-          .replace("%number%", String.valueOf(mergedEntities + 1)));
-      mergeableWith.setMetadata("SpivakSpawnersEntitiesMerged", new FixedMetadataValue(plugin, mergedEntities + 1));
-      e.setCancelled(true);
-      return;
+    if (plugin.getConfig().getBoolean("Mob-Merge-Enabled")) {
+      Entity mergeableWith = plugin.getMergeHandler().getNearbyMergeable(e.getEntity());
+      if (mergeableWith != null) {
+        int mergedEntities = mergeableWith.getMetadata("SpivakSpawnersEntitiesMerged").get(0).asInt();
+        mergeableWith.setCustomName(plugin.getLanguageManager().color("Merged.Entity-Name")
+            .replace("%mob%", EntityDisplayNameFixer.fixDisplayName(mergeableWith.getType()))
+            .replace("%number%", String.valueOf(mergedEntities + 1)));
+        mergeableWith.setMetadata("SpivakSpawnersEntitiesMerged", new FixedMetadataValue(plugin, mergedEntities + 1));
+        e.setCancelled(true);
+        return;
+      }
+      e.getEntity().setMetadata("SpivakSpawnersEntity", new FixedMetadataValue(plugin, true));
+      e.getEntity().setMetadata("SpivakSpawnersEntitiesMerged", new FixedMetadataValue(plugin, 1));
     }
-    e.getEntity().setMetadata("SpivakSpawnersEntity", new FixedMetadataValue(plugin, true));
-    e.getEntity().setMetadata("SpivakSpawnersEntitiesMerged", new FixedMetadataValue(plugin, 1));
     for (SpawnerPerk perk : spawner.getPerks()) {
       e.getEntity().setMetadata(perk.getMetadataAccessor(), new FixedMetadataValue(plugin, true));
     }
