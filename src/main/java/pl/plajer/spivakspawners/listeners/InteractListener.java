@@ -26,6 +26,9 @@ public class InteractListener implements Listener {
 
   @EventHandler
   public void onInteract(PlayerInteractEvent e) {
+    if (!plugin.getConfig().getBoolean("Unlockable-Spawners-Enabled")) {
+      return;
+    }
     if (e.getItem() == null || !e.getItem().hasItemMeta() || !e.getItem().getItemMeta().hasDisplayName()
         || !e.getItem().getItemMeta().hasLore()) {
       return;

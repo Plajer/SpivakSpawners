@@ -47,8 +47,11 @@ public class SpawnerCommand implements CommandExecutor {
     }
     switch (args[0].toLowerCase()) {
       case "heads":
-        new HeadStorageMenu((Player) sender);
-        return true;
+        if (plugin.getConfig().getBoolean("Unlockable-Spawners-Enabled")) {
+          new HeadStorageMenu((Player) sender);
+          return true;
+        }
+        return false;
       case "give":
         if (!sender.hasPermission("spivakspawners.give")) {
           sender.sendMessage(plugin.getLanguageManager().color("Commands.No-Permission"));
@@ -95,6 +98,9 @@ public class SpawnerCommand implements CommandExecutor {
         Utils.giveSpawner(spawnerReceiver, spawner, Integer.parseInt(args[2]));
         return true;
       case "givehead":
+        if (!plugin.getConfig().getBoolean("Unlockable-Spawners-Enabled")) {
+          return false;
+        }
         if (!sender.hasPermission("spivakspawners.givehead")) {
           sender.sendMessage(plugin.getLanguageManager().color("Commands.No-Permission"));
           return true;
@@ -140,9 +146,15 @@ public class SpawnerCommand implements CommandExecutor {
         Utils.giveHead(headReceiver, head, Integer.parseInt(args[2]));
         return true;
       case "shop":
+        if (!plugin.getConfig().getBoolean("Unlockable-Spawners-Enabled")) {
+          return false;
+        }
         new SpawnerShopMenu((Player) sender);
         return true;
       case "rankup":
+        if (!plugin.getConfig().getBoolean("Unlockable-Spawners-Enabled")) {
+          return false;
+        }
         User user = plugin.getUserManager().getUser((Player) sender);
         int nextLevelNumber = user.getLevel() + 1;
         Level nextLevel = null;

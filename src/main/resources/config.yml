@@ -27,6 +27,16 @@ Mob-Merge-Enabled: true
 # - Spawners Mob Perks - no 10% more loot etc anymore
 Spawners-Merge-Enabled: true
 
+# Should we use shop and rank-up commands to purchase
+# spawners and level up? If disabled you'll be able
+# to get spawners only via admin command /spawner give!
+# WARNING! Disabling this part of the plugin
+# will disable all these features too:
+# - Heads Storage
+# - Shop command and GUI
+# - Rank-up command
+Unlockable-Spawners-Enabled: true
+
 # You can modify chances to execute spawner perks here
 Perks-Chances:
   Bonus-Loot-10: 10

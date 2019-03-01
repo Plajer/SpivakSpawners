@@ -18,7 +18,9 @@ public class HeadsCommand implements CommandExecutor {
 
   public HeadsCommand(Main plugin) {
     this.plugin = plugin;
-    plugin.getCommand("heads").setExecutor(this);
+    if (plugin.getConfig().getBoolean("Unlockable-Spawners-Enabled")) {
+      plugin.getCommand("heads").setExecutor(this);
+    }
   }
 
   @Override
