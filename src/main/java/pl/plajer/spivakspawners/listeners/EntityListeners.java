@@ -86,20 +86,20 @@ public class EntityListeners implements Listener {
         }
         switch (perk) {
           case BONUS_LOOT_10:
-            if (rand.nextInt(0, 100) > 10) {
+            if (rand.nextInt(0, 100) > perk.getChance()) {
               break;
             }
             //drop one item more from list of drops
             en.getWorld().dropItemNaturally(en.getLocation(), drops.get(rand.nextInt(drops.size())));
             break;
           case BONUS_LOOT_20:
-            if (rand.nextInt(0, 100) > 20) {
+            if (rand.nextInt(0, 100) > perk.getChance()) {
               break;
             }
             en.getWorld().dropItemNaturally(en.getLocation(), drops.get(rand.nextInt(drops.size())));
             break;
           case BONUS_HEADS_1:
-            if (rand.nextInt(0, 100) <= 10) {
+            if (rand.nextInt(0, 100) <= perk.getChance()) {
               e.getDrops().add(plugin.getHeadsRegistry().getByEntityType(e.getEntityType()).getItemStack());
             }
             break;
@@ -107,13 +107,13 @@ public class EntityListeners implements Listener {
             e.setDroppedExp((int) (e.getDroppedExp() * rand.nextDouble(1.0, 1.5)));
             break;
           case BONUS_HEADS_2:
-            if (rand.nextInt(0, 100) <= 20) {
+            if (rand.nextInt(0, 100) <= perk.getChance()) {
               e.getDrops().add(plugin.getHeadsRegistry().getByEntityType(e.getEntityType()).getItemStack());
             }
             break;
           case BONUS_LOOT_50:
             //higher chance of drop here
-            if (rand.nextInt(0, 100) > 50) {
+            if (rand.nextInt(0, 100) > perk.getChance()) {
               break;
             }
             //drop one item more from list of drops

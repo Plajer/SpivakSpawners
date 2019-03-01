@@ -26,3 +26,13 @@ Mob-Merge-Enabled: true
 # - Spawners Level GUI that shows spawner level on click
 # - Spawners Mob Perks - no 10% more loot etc anymore
 Spawners-Merge-Enabled: true
+
+# You can modify chances to execute spawner perks here
+Perks-Chances:
+  Bonus-Loot-10: 10
+  Bonus-Loot-20: 20
+  Bonus-Heads-1: 10
+  #permanent perk Bonus-Xp
+  Bonus-Heads-2: 20
+  Bonus-Loot-50: 50
+  #permanent perk Double-Xp
