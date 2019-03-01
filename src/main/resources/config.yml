@@ -19,3 +19,10 @@ Heads-Deposit-Sound: "NOTE_BASS_DRUM"
 
 # Should we enable mobs merging feature?
 Mob-Merge-Enabled: true
+
+# Should we enable spawners merging feature?
+# WARNING! Disabling this part of the plugin
+# will disable all these features too:
+# - Spawners Level GUI that shows spawner level on click
+# - Spawners Mob Perks - no 10% more loot etc anymore
+Spawners-Merge-Enabled: true

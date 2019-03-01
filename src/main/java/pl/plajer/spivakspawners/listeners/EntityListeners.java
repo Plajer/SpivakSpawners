@@ -79,48 +79,50 @@ public class EntityListeners implements Listener {
     }
     Entity en = e.getEntity();
     List<ItemStack> drops = e.getDrops();
-    for (SpawnerPerk perk : SpawnerPerk.values()) {
-      if (!en.hasMetadata(perk.getMetadataAccessor())) {
-        continue;
-      }
-      switch (perk) {
-        case BONUS_LOOT_10:
-          if (rand.nextInt(0, 100) > 10) {
+    if (plugin.getConfig().getBoolean("Spawners-Merge-Enabled")) {
+      for (SpawnerPerk perk : SpawnerPerk.values()) {
+        if (!en.hasMetadata(perk.getMetadataAccessor())) {
+          continue;
+        }
+        switch (perk) {
+          case BONUS_LOOT_10:
+            if (rand.nextInt(0, 100) > 10) {
+              break;
+            }
+            //drop one item more from list of drops
+            en.getWorld().dropItemNaturally(en.getLocation(), drops.get(rand.nextInt(drops.size())));
             break;
-          }
-          //drop one item more from list of drops
-          en.getWorld().dropItemNaturally(en.getLocation(), drops.get(rand.nextInt(drops.size())));
-          break;
-        case BONUS_LOOT_20:
-          if (rand.nextInt(0, 100) > 20) {
+          case BONUS_LOOT_20:
+            if (rand.nextInt(0, 100) > 20) {
+              break;
+            }
+            en.getWorld().dropItemNaturally(en.getLocation(), drops.get(rand.nextInt(drops.size())));
             break;
-          }
-          en.getWorld().dropItemNaturally(en.getLocation(), drops.get(rand.nextInt(drops.size())));
-          break;
-        case BONUS_HEADS_1:
-          if (rand.nextInt(0, 100) <= 10) {
-            e.getDrops().add(plugin.getHeadsRegistry().getByEntityType(e.getEntityType()).getItemStack());
-          }
-          break;
-        case BONUS_XP:
-          e.setDroppedExp((int) (e.getDroppedExp() * rand.nextDouble(1.0, 1.5)));
-          break;
-        case BONUS_HEADS_2:
-          if (rand.nextInt(0, 100) <= 20) {
-            e.getDrops().add(plugin.getHeadsRegistry().getByEntityType(e.getEntityType()).getItemStack());
-          }
-          break;
-        case BONUS_LOOT_50:
-          //higher chance of drop here
-          if (rand.nextInt(0, 100) > 50) {
+          case BONUS_HEADS_1:
+            if (rand.nextInt(0, 100) <= 10) {
+              e.getDrops().add(plugin.getHeadsRegistry().getByEntityType(e.getEntityType()).getItemStack());
+            }
             break;
-          }
-          //drop one item more from list of drops
-          en.getWorld().dropItemNaturally(en.getLocation(), drops.get(rand.nextInt(drops.size())));
-          break;
-        case DOUBLE_XP:
-          e.setDroppedExp(e.getDroppedExp() * 2);
-          break;
+          case BONUS_XP:
+            e.setDroppedExp((int) (e.getDroppedExp() * rand.nextDouble(1.0, 1.5)));
+            break;
+          case BONUS_HEADS_2:
+            if (rand.nextInt(0, 100) <= 20) {
+              e.getDrops().add(plugin.getHeadsRegistry().getByEntityType(e.getEntityType()).getItemStack());
+            }
+            break;
+          case BONUS_LOOT_50:
+            //higher chance of drop here
+            if (rand.nextInt(0, 100) > 50) {
+              break;
+            }
+            //drop one item more from list of drops
+            en.getWorld().dropItemNaturally(en.getLocation(), drops.get(rand.nextInt(drops.size())));
+            break;
+          case DOUBLE_XP:
+            e.setDroppedExp(e.getDroppedExp() * 2);
+            break;
+        }
       }
     }
     for (CustomDrop drop : plugin.getSpawnerListeners().getCustomDrops().get(en.getType())) {

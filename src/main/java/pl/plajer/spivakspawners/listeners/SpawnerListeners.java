@@ -68,6 +68,9 @@ public class SpawnerListeners implements Listener {
 
   @EventHandler
   public void onSpawnerClick(PlayerInteractEvent e) {
+    if (!plugin.getConfig().getBoolean("Spawners-Merge-Enabled")) {
+      return;
+    }
     if (e.getAction() != Action.RIGHT_CLICK_BLOCK) {
       return;
     }
@@ -165,38 +168,40 @@ public class SpawnerListeners implements Listener {
 
     String mob = ChatColor.stripColor(e.getPlayer().getItemInHand().getItemMeta().getDisplayName());
     mob = EntityDisplayNameFixer.fromFixedDisplayName(mob.replace(" Spawner", ""));
-    for (Block block : Utils.getNearbyBlocks(e.getBlockPlaced().getLocation(), 3)) {
-      if (block.getType() != Material.MOB_SPAWNER) {
-        continue;
-      }
-      CreatureSpawner creatureSpawner = (CreatureSpawner) block.getState();
-      if (!creatureSpawner.getCreatureTypeName().equals(mob)) {
-        continue;
-      }
-      Spawner spawner = plugin.getSpawnersStorage().getByLocation(block.getLocation());
-      if (spawner == null || spawner.getSpawnerData().getSpawnerLevel() == SpawnerData.MAX_UPGRADE_LEVEL) {
-        continue;
-      }
-      if (spawner.getSpawnerData().getSpawnerLevel() + handSpawnerLevel > SpawnerData.MAX_UPGRADE_LEVEL) {
-        continue;
-      }
-      e.setCancelled(true);
-      if (e.getItemInHand().getAmount() > 1) {
-        e.getItemInHand().setAmount(e.getItemInHand().getAmount() - 1);
-      } else {
-        e.getPlayer().getInventory().remove(e.getItemInHand());
-      }
-      spawner.getSpawnerData().setSpawnerLevel(spawner.getSpawnerData().getSpawnerLevel() + handSpawnerLevel);
-      if (spawner.shouldApplyPerk()) {
-        spawner.addPerk(SpawnerPerk.values()[(spawner.getSpawnerData().getSpawnerLevel() / 4) - 1]);
-      }
-      if (spawner.getSpawnerData().getSpawnerLevel() == SpawnerData.MAX_UPGRADE_LEVEL) {
-        e.getPlayer().sendMessage(plugin.getLanguageManager().color("Messages.Spawner-Maxed"));
+    if (plugin.getConfig().getBoolean("Spawners-Merge-Enabled")) {
+      for (Block block : Utils.getNearbyBlocks(e.getBlockPlaced().getLocation(), 3)) {
+        if (block.getType() != Material.MOB_SPAWNER) {
+          continue;
+        }
+        CreatureSpawner creatureSpawner = (CreatureSpawner) block.getState();
+        if (!creatureSpawner.getCreatureTypeName().equals(mob)) {
+          continue;
+        }
+        Spawner spawner = plugin.getSpawnersStorage().getByLocation(block.getLocation());
+        if (spawner == null || spawner.getSpawnerData().getSpawnerLevel() == SpawnerData.MAX_UPGRADE_LEVEL) {
+          continue;
+        }
+        if (spawner.getSpawnerData().getSpawnerLevel() + handSpawnerLevel > SpawnerData.MAX_UPGRADE_LEVEL) {
+          continue;
+        }
+        e.setCancelled(true);
+        if (e.getItemInHand().getAmount() > 1) {
+          e.getItemInHand().setAmount(e.getItemInHand().getAmount() - 1);
+        } else {
+          e.getPlayer().getInventory().remove(e.getItemInHand());
+        }
+        spawner.getSpawnerData().setSpawnerLevel(spawner.getSpawnerData().getSpawnerLevel() + handSpawnerLevel);
+        if (spawner.shouldApplyPerk()) {
+          spawner.addPerk(SpawnerPerk.values()[(spawner.getSpawnerData().getSpawnerLevel() / 4) - 1]);
+        }
+        if (spawner.getSpawnerData().getSpawnerLevel() == SpawnerData.MAX_UPGRADE_LEVEL) {
+          e.getPlayer().sendMessage(plugin.getLanguageManager().color("Messages.Spawner-Maxed"));
+          return;
+        }
+        e.getPlayer().sendMessage(plugin.getLanguageManager().color("Messages.Spawner-Merged")
+            .replace("%mob%", EntityDisplayNameFixer.fixDisplayName(spawner.getSpawnerData().getEntityType())));
         return;
       }
-      e.getPlayer().sendMessage(plugin.getLanguageManager().color("Messages.Spawner-Merged")
-          .replace("%mob%", EntityDisplayNameFixer.fixDisplayName(spawner.getSpawnerData().getEntityType())));
-      return;
     }
     CreatureSpawner creatureSpawner = (CreatureSpawner) e.getBlockPlaced().getState();
     creatureSpawner.setCreatureTypeByName(mob);
