@@ -169,7 +169,7 @@ public class SpawnerListeners implements Listener {
     String mob = ChatColor.stripColor(e.getPlayer().getItemInHand().getItemMeta().getDisplayName());
     mob = EntityDisplayNameFixer.fromFixedDisplayName(mob.replace(" Spawner", ""));
     if (plugin.getConfig().getBoolean("Spawners-Merge-Enabled")) {
-      for (Block block : Utils.getNearbyBlocks(e.getBlockPlaced().getLocation(), 3)) {
+      for (Block block : Utils.getNearbyBlocks(e.getBlockPlaced().getLocation(), 2)) {
         if (block.getType() != Material.MOB_SPAWNER) {
           continue;
         }

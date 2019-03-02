@@ -1,6 +1,7 @@
 package pl.plajer.spivakspawners.registry.spawner.data;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.bukkit.entity.EntityType;
@@ -15,7 +16,7 @@ public class SpawnerData implements Serializable {
   public static final int MAX_UPGRADE_LEVEL = 28;
   private int spawnerLevel;
   private EntityType entityType;
-  private List<CustomDrop> customDrops;
+  private transient List<CustomDrop> customDrops = new ArrayList<>();
 
   public SpawnerData(int spawnerLevel, EntityType entityType, List<CustomDrop> customDrops) {
     this.spawnerLevel = spawnerLevel;
